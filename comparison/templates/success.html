@@ -5,5 +5,19 @@
 <body>
     <h1>Success!</h1>
     <p>Your app has successfully authenticated with Spotify.</p>
+
+    {% if success %}
+    <p>Your message has been submitted successfully.</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+        <br><br>
+        {{ form.playlist_id }}
+        <button type="submit">Submit</button>
+    
+    </form>
 </body>
 </html>
