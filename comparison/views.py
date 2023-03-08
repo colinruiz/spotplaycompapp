@@ -6,10 +6,10 @@ from spotipy.oauth2 import SpotifyOAuth
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
 CLIENT_SECRET = "c520c87edc224b069f8ef996a5287642"
 REDIRECT_URI = "http://127.0.0.1:8000/spotify/redirect"
-SCOPES= "user-read-playback-state app-remote-control streaming user-library-read"
-from spotipy import CacheFileHandler
+SCOPES= "user-library-read"
+#from spotipy.cache_handler import SpotifyCacheHandler
 
-cache_handler = CacheFileHandler(cache_path=".cache")
+#cache_handler = SpotifyCacheHandler(cache_path=".cache")
 
 def home(request):
     return render(request, 'home.html')
@@ -32,39 +32,34 @@ def spotify_login(request):
 def spotify_callback(request):
     auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
                                 redirect_uri=REDIRECT_URI,
-                                scope=SCOPES,
-                                cache_path=cache_handler.get_cache_path())
+                                scope=SCOPES)
 
     # Check if the authorization code is in the request
-    if 'code' in request.GET:
+    if request.GET.get('code'):
         try:
             # Get the authorization code from the request
             code = request.GET['code']
             # Exchange the authorization code for an access token and a refresh token
             token_info = auth_manager.get_access_token(code)
             # Save the access token and refresh token to the cache
-            cache_handler.save_token_info(token_info)
+            auth_manager.cache_handler.save_token_to_cache(token_info)
             # Redirect the user to the success page
-            return redirect('success')
+            return render(request, 'success.html')
         except Exception as e:
             # Something went wrong during the token exchange
             print(f"Token exchange error: {e}")
             return render(request, 'failure.html')
     else:
         # Check if the access token is still valid
-        token_info = cache_handler.get_cached_token_info()
+        token_info = auth_manager.cache_handler.get_cached_token()
         if auth_manager.validate_token(token_info):
             # Access token is still valid, refresh it
             token_info = auth_manager.refresh_access_token(token_info['refresh_token'])
             # Save the new access token to the cache
-            cache_handler.save_token_info(token_info)
+            auth_manager.cache_handler.save_token_to_cache(token_info)
             # Redirect the user to the success page
-            return redirect('success')
+            return render(request, 'success.html')
         else:
             # Access token is not valid, redirect the user to the Spotify login page
             auth_url = auth_manager.get_authorize_url()
             return redirect(auth_url)
-
-
-
-
