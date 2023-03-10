@@ -34,15 +34,21 @@
   </head>
   <body>
     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="image-div">
+      <div class="row">
+        <div class="col">
+          <img class="center" src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black-768x230.png">
+        </div>
+      </div>
+    </div>
     <div class="header">
       <div class="row">
         <div class="col">
-          <a href="/comparison/sources/Spotify_Logo_CMYK_Green.png"></a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <h1 class="text-center"></h1>Welcome to the Spotify Playlist Comparison App</h1>
+          <h1 class="text-center">Welcome to the Spotify Playlist Comparison App</h1>
         </div>
       </div>
       <div class="row">
@@ -52,9 +58,13 @@
       </div>
     </div>
     <div class="loginbutton">
-      <form action="{% url 'spotify_login' %}">
-        <button type="submit">Log in with Spotify</button>
-      </form>
+      <div class="row">
+        <div class="col">
+          <form action="{% url 'spotify_login' %}">
+            <button class="center" type="submit">Log in with Spotify</button>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>
