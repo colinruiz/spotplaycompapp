@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import requests
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth
@@ -77,3 +77,16 @@ def form(request):
     else:
         form = MyDataForm()
     return render(request, 'success.html', {'form': form})
+
+
+def logout_view(request):
+    access_token = request.session.get('access_token')
+    if access_token:
+        revoke_url = 'https://accounts.spotify.com/api/token/revoke'
+        params = {'token': access_token}
+        response = requests.delete(revoke_url, params=params)
+        if response.status_code == 200:
+            del request.session['access_token']
+            # Perform any additional logout tasks
+            return render(request, 'home.html')
+    return render(request, 'home.html')
