@@ -1,7 +1,7 @@
 html body {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Impact', sans-serif;
 }
 
-.header h1 p {
-    text-align: center;
+.header h1 {
+    font-size: 35px;
 }
