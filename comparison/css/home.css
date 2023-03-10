@@ -3,5 +3,18 @@ html body {
 }
 
 .header h1 {
-    font-size: 35px;
+    font-size: 24px;
+}
+
+.image-div img {
+    width: 400px !important;
+    height: 170px !important;
+}
+
+.loginbutton {
+    margin: auto;
+}
+
+form {
+    text-align: center !important;
 }
