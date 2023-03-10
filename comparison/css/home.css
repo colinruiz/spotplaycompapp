@@ -1,5 +1,7 @@
 html body {
     font-family: 'Noto Sans', sans-serif;
-    align-items: center;
 }
 
+.header h1 p {
+    text-align: center;
+}
