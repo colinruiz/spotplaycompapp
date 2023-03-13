@@ -23,13 +23,15 @@ def spotify_login(request):
                                 scope=SCOPES)
 
     # If there is no authorization code, redirect the user to the Spotify login page
-    if not request.GET.get('code'):
-        auth_url = auth_manager.get_authorize_url()
-        return redirect(auth_url)
+    # if not request.GET.get('code'):
+    #     auth_url = auth_manager.get_authorize_url()
+    #     return redirect(auth_url)
 
+    auth_url = auth_manager.get_authorize_url()
+    return redirect(auth_url)
     # If there is an authorization code, exchange it for an access token and refresh token
-    auth_manager.get_access_token(request.GET.get('code'))
-    return render(request, 'success.html')
+    # auth_manager.get_access_token(request.GET.get('code'))
+    # return render(request, 'success.html')
 
 
 def spotify_callback(request):

@@ -5,5 +5,11 @@
 <body>
     <h1>Failure!</h1>
     <p>Nope.</p>
+    <div class= "logoutbutton">
+        <form method="post" action="{% url 'logout_view' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
 </body>
 </html>
