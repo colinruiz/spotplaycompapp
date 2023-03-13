@@ -2,7 +2,7 @@ from django.shortcuts import render
 import requests
 # Create your views here.
 from django.shortcuts import redirect
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 from .forms import MyDataForm
 
 
@@ -20,7 +20,7 @@ def home(request):
 def spotify_login(request):
     auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
                                 redirect_uri=REDIRECT_URI,
-                                scope=SCOPES)
+                                scope=SCOPES, show_dialog=True)
 
     # If there is no authorization code, redirect the user to the Spotify login page
     # if not request.GET.get('code'):
