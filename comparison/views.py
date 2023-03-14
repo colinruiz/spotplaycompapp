@@ -74,6 +74,9 @@ def form(request):
     if request.method == 'POST':
         form = MyDataForm(request.POST)
         if form.is_valid():
+            playlist_id = form.cleaned_data['playlist_id']
+            with open('playlist_ids.txt', 'a') as f:
+                f.write(playlist_id + '\n')
             form.save()
             return render(request, 'success.html', {'form': form, 'success': True})
     else:
