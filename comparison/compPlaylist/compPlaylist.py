@@ -1,16 +1,24 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
-import sys
-sys.path.append('/Users/rkutyna/Documents/GitHub/compspot/comparison')
-import credentials
+import os
 
-spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(credentials.CLIENT_ID, credentials.CLIENT_SECRET))
+# deletes the cache file so that there is no opportunity for the cache to mess up the authorization manager
+try:
+    os.remove(".cache")
+except:
+    print("", end="")
+
+CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
+CLIENT_SECRET = "c520c87edc224b069f8ef996a5287642"
+REDIRECT_URI = "http://127.0.0.1:8000/spotify/redirect"
+
+spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET))
 #spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377'))
 
 # scopes for auth_manager
 scope = "user-read-playback-state app-remote-control streaming user-library-read"
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(credentials.CLIENT_ID, credentials.CLIENT_SECRET, scope=scope, redirect_uri=credentials.REDIRECT_URI))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=scope, redirect_uri=REDIRECT_URI))
 #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
 
 # test playlist ids
