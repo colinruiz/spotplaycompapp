@@ -6,7 +6,7 @@ import os
 try:
     os.remove(".cache")
 except:
-    print("", end="")
+    ()
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
 CLIENT_SECRET = "c520c87edc224b069f8ef996a5287642"
