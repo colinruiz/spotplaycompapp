@@ -12,6 +12,13 @@
 
     <form method="POST">
         {% csrf_token %}
+        <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+        <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
+        <button type="submit">Submit</button>
+    </form>
+
+    {% comment %} <form method="post">
+        {% csrf_token %}
         {{ form.as_p }}
         <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
         <br><br>
@@ -25,7 +32,7 @@
                 background-color: #f7f7f7;
             }
         </style>
-    </form>
+    </form> {% endcomment %}
     <div class= "logoutbutton">
         <form method="post" action="{% url 'logout_view' %}">
             {% csrf_token %}
