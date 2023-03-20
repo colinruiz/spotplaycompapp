@@ -48,7 +48,7 @@
         </div>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <p>Enter two playlists to compare then hit button</p>
+                <p>Enter two playlists to compare then click this button:</p>
             </div>
         </div>
         <div class="row">
@@ -62,33 +62,73 @@
     </div>
     <br>
     <br>
-    {% if success %}
-    <p>Your message has been submitted successfully.</p>
-    {% endif %}
+    <div class="enter-playlists">
+        <div class="row">
+            <div class="col-4 d-flex justify-content-center playlist-one">
+                {% if success %}
+                <p>Your message has been submitted successfully.</p>
+                {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
-        <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
-        <button type="submit">Submit</button>
-    </form>
+                <form method="POST">
+                {% csrf_token %}
+                    <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+                    <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
+                    <button type="submit">Submit</button>
+                </form>
 
-    {% comment %} <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
-        <br><br>
-        {{ form.playlist_id }}
-        <button type="submit">Submit</button>
-        <style>
-            input[type="text"] {
-                border: 1px solid #ccc;
-                padding: 5px;
-                border-radius: 5px;
-                background-color: #f7f7f7;
-            }
-        </style>
-    </form> {% endcomment %}
+                {% comment %} <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+                    <br>
+                    <br>
+                    {{ form.playlist_id }}
+                    <button type="submit">Submit</button>
+                    <style>
+                        input[type="text"] {
+                            border: 1px solid #ccc;
+                            padding: 5px;
+                            border-radius: 5px;
+                            background-color: #f7f7f7;
+                        }
+                    </style>
+                </form> {% endcomment %}
+            </div>
+            <div class="col-4 d-flex justify-content-center similar-songs-col">
+                <p>This is where similar songs go</p>
+            </div>
+            <div class="col-4 d-flex justify-content-center playlist-two">
+                {% if success %}
+                <p>Your message has been submitted successfully.</p>
+                {% endif %}
+
+                <form method="POST">
+                {% csrf_token %}
+                    <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+                    <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
+                    <button type="submit">Submit</button>
+                </form>
+
+                {% comment %} <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+                    <br>
+                    <br>
+                    {{ form.playlist_id }}
+                    <button type="submit">Submit</button>
+                    <style>
+                        input[type="text"] {
+                            border: 1px solid #ccc;
+                            padding: 5px;
+                            border-radius: 5px;
+                            background-color: #f7f7f7;
+                        }
+                    </style>
+                </form> {% endcomment %}
+            </div>
+        </div>
+    </div>
     <br>
     <br>
 </body>
