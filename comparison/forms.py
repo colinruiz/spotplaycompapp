@@ -16,3 +16,12 @@ class SecondForm(forms.ModelForm):
     class Meta:
         model = Second
         fields = ['playlist_id']
+
+
+class DropdownForm(forms.Form):
+    choices = (
+        ('option1', 'Option 1'),
+        ('option2', 'Option 2'),
+        ('option3', 'Option 3'),
+    )
+    dropdown = forms.ChoiceField(choices=choices)
