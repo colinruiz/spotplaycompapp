@@ -1,19 +1,27 @@
-html body {
-    font-family: 'Impact', sans-serif;
+.loginbutton {
+    font-family: 'Arial', sans-serif !important;
+    margin: auto;
+}
+
+p {
+    font-family: 'Arial', sans-serif !important;
 }
 
 .header h1 {
     font-size: 24px;
+    font-family: 'Impact', sans-serif;
 }
 
-.spotify-logo {
-    height: 25%;
-    width: 25%;
-    align-content: center;
+
+.image-div {
+    text-align: center;
 }
 
-.loginbutton {
-    margin: auto;
+.resized-image {
+    width: 20%;
+    height: auto;
+    display: inline-block;
+    margin: 0 auto;
 }
 
 form {
