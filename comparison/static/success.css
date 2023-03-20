@@ -1,0 +1,14 @@
+.resized-image {
+    width: 60%;
+    height: auto;
+    padding-left: 10%;
+}
+
+h1 {
+    font-size: 24px;
+    font-family: 'Impact', sans-serif;
+}
+
+.logout-button {
+    padding-right: 10%;
+}
