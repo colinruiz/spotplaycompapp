@@ -1,3 +1,6 @@
+<!-- success.html -->
+{% load static %}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -25,16 +28,40 @@
 
 </head>
 <body>
-    <div class="image-div">
+    <br>
+    <div class="top-page">
         <div class="row">
-          <div class="col image-div">
-            <img src="{% static 'spotify_logo.png' %}" alt="Spotify Logo" class="resized-image">
-          </div>
+            <div class="col-3 image-div">
+                <img src="{% static 'spotify_logo.png' %}" alt="Spotify Logo" class="resized-image">
+            </div>
+            <div class="col-6 d-flex justify-content-center title-div">
+                <h1 class="text-center">Spotify Playlist Comparison</h1>
+            </div>
+            <div class="col-3 logout-div">
+                <div class= "d-flex flex-row-reverse logout-button">
+                    <form method="post" action="{% url 'logout_view' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-success p-2" type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
-    <h1>Success!</h1>
-    <p>Your app has successfully authenticated with Spotify.</p>
-
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <p>Enter two playlists to compare then hit button</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center calculate-button">
+                <form method="post" action="{% url 'logout_view' %}">
+                    {% csrf_token %}
+                    <button class="center btn btn-success" type="submit">Calculate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
     {% if success %}
     <p>Your message has been submitted successfully.</p>
     {% endif %}
@@ -62,11 +89,7 @@
             }
         </style>
     </form> {% endcomment %}
-    <div class= "logoutbutton">
-        <form method="post" action="{% url 'logout_view' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    </div>
+    <br>
+    <br>
 </body>
 </html>

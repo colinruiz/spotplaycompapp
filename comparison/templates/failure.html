@@ -1,3 +1,6 @@
+<!-- failure.html -->
+{% load static %}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -25,12 +28,14 @@
 
 </head>
 <body>
+    <br>
+    <br>
     <h1 class="text-center">Failure!</h1>
     <p class="text-center">Unable to connect to Spotify</p>
     <div class= "logoutbutton">
         <form method="post" action="{% url 'logout_view' %}">
             {% csrf_token %}
-            <button type="submit" class="btn btn-failure">Logout</button>
+            <button type="submit" class="btn btn-danger">Logout</button>
         </form>
     </div>
 </body>
