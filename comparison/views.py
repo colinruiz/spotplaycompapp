@@ -3,7 +3,7 @@ import requests
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
-from .forms import MyDataForm
+from .forms import MyDataForm, SecondForm
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
@@ -81,6 +81,19 @@ def form(request):
             return render(request, 'success.html', {'form': form, 'success': True})
     else:
         form = MyDataForm()
+    return render(request, 'success.html', {'form': form})
+
+def formtwo(request):
+    if request.method == 'POST':
+        form = SecondForm(request.POST)
+        if form.is_valid():
+            playlist_id = form.cleaned_data['playlist_id']
+            with open('playlist_ids.txt', 'a') as f:
+                f.write(playlist_id + '\n')
+            form.save()
+            return render(request, 'success.html', {'form': form, 'success': True})
+    else:
+        form = SecondForm()
     return render(request, 'success.html', {'form': form})
 
 
