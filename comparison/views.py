@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import requests
 # Create your views here.
+import spotipy
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 from .forms import MyDataForm, SecondForm
@@ -9,7 +10,7 @@ from .forms import MyDataForm, SecondForm
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
 CLIENT_SECRET = "c520c87edc224b069f8ef996a5287642"
 REDIRECT_URI = "http://127.0.0.1:8000/spotify/redirect"
-SCOPES= "user-read-playback-state app-remote-control streaming user-library-read"
+SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private"
 #from spotipy.cache_handler import SpotifyCacheHandler
 
 #cache_handler = SpotifyCacheHandler(cache_path=".cache")
@@ -18,7 +19,7 @@ def home(request):
     return render(request, 'home.html')
 
 def spotify_login(request):
-    auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
+    auth_manager = spotipy.SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
                                 redirect_uri=REDIRECT_URI,
                                 scope=SCOPES, show_dialog=True)
 
@@ -35,7 +36,7 @@ def spotify_login(request):
 
 
 def spotify_callback(request):
-    auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
+    auth_manager = spotipy.SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
                                 redirect_uri=REDIRECT_URI,
                                 scope=SCOPES)
 
@@ -49,7 +50,7 @@ def spotify_callback(request):
             # Save the access token and refresh token to the cache
             auth_manager.cache_handler.save_token_to_cache(token_info)
             # Redirect the user to the success page
-            return render(request, 'success.html')
+            return render(request, 'get_playlist')
         except Exception as e:
             # Something went wrong during the token exchange
             print(f"Token exchange error: {e}")
@@ -63,7 +64,7 @@ def spotify_callback(request):
             # Save the new access token to the cache
             auth_manager.cache_handler.save_token_to_cache(token_info)
             # Redirect the user to the success page
-            return render(request, 'success.html')
+            return render(request, 'get_playlist')
         else:
             # Access token is not valid, redirect the user to the Spotify login page
             auth_url = auth_manager.get_authorize_url()
@@ -108,3 +109,7 @@ def logout_view(request):
             # Perform any additional logout tasks
             return render(request, 'home.html')
     return render(request, 'home.html')
+
+def get_playlist(request):
+    playlists = auth_manager.current_user_playlists(limit=50)
+    
