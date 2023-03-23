@@ -66,15 +66,19 @@
         <div class="row">
             <div class="col-4 d-flex justify-content-center playlist-one">
                 {% if success %}
-                <p>Your message has been submitted successfully.</p>
+                <p>Your playlist ID is: {{ playlist_id }}</p>
                 {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
-        <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
-        <button type="submit">Submit</button>
-    </form>
+                {% comment %} {% if success %}
+                <p>Your message has been submitted successfully.</p>
+                {% endif %} {% endcomment %}
+
+                <form action="{% url 'form' %}" method="POST">
+                    {% csrf_token %}
+                    <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+                    <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
+                    <button type="submit">Submit</button>
+                </form>
 
                 {% comment %} <form method="post">
                     {% csrf_token %}
@@ -98,11 +102,11 @@
                 <p>This is where similar songs go</p>
             </div>
             <div class="col-4 d-flex justify-content-center playlist-two">
-                {% if success %}
+                {% comment %} {% if success %}
                 <p>Your message has been submitted successfully.</p>
-                {% endif %}
+                {% endif %} {% endcomment %}
 
-                <form method="POST">
+                <form action="{% url 'formtwo' %}" method="POST">
                 {% csrf_token %}
                     <label class="form-field" for="{{ formtwo.playlist_id.id_for_label }}">Enter playlist ID:</label>
                     <input class="form-field" type="text" name="{{ formtwo.playlist_id.name }}" value="{{ formtwo.playlist_id.value|default:'' }}">

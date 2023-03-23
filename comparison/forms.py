@@ -4,6 +4,8 @@ from .models import MyData, Second
 class MyDataForm(forms.ModelForm):
     #playlist_id = forms.CharField(max_length=100)
     playlist_id = forms.CharField(label = "Playlist ID")
+    #playlist_id_2 = forms.CharField(label = "Playlist ID 2")
+    
     
     class Meta:
         model = MyData
