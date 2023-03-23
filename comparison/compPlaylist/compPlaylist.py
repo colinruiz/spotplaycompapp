@@ -35,8 +35,8 @@ def comparePlaylists(playlist1_id, playlist2_id):
     length2=sp.playlist(playlist2_id)['tracks']['total']
     # iterates through playlists and adds to a list to be compared
     list2 = []
-    for k in range((length2//100)):
-        playlist2=sp.playlist_tracks(playlist2_id, limit=100, offset=100*k)['items']
+    for k in range((length2//100)+1):
+        playlist2=sp.playlist_tracks(playlist2_id, limit=100, offset=100*(k))['items']
         for a in playlist2:
             list2.append(a['track']['id'])
                 
