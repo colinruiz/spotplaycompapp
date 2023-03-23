@@ -12,6 +12,10 @@
     <!--    jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <!--    JS-->
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+
     <!--    fontawesome-->
     <script src="https://kit.fontawesome.com/e5b5eed843.js" crossorigin="anonymous"></script>
 
@@ -64,22 +68,22 @@
     <br>
     <div class="enter-playlists">
         <div class="row">
-            <div class="col-4 d-flex justify-content-center playlist-one">
-                <form action="{% url 'dropdown_view1' %}" method="post">
+            <div class="col-3 playlist-one">
+                <form id="dropdown1" method="post">
                     {% csrf_token %}
-                    {{ dropdown_form }}
-                    <button type="submit">Submit</button>
-                </form>                  
-            </div>
-            <div class="col-4 d-flex justify-content-center similar-songs-col">
+                    {{ dropdown_form1 }}
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>                                    
+            </div>           
+            <div class="col-6 d-flex justify-content-center similar-songs-col">
                 <p>This is where similar songs go</p>
             </div>
-            <div class="col-4 d-flex justify-content-center playlist-two">
-                <form method="post">
+            <div class="col-3 playlist-two">
+                <form id="dropdown2" method="post">
                     {% csrf_token %}
-                    {{ dropdown_form }}
-                    <button type="submit">Submit</button>
-                </form>                  
+                    {{ dropdown_form2 }}
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>              
             </div>
         </div>
         <div class="row">
@@ -98,3 +102,23 @@
     <br>
 </body>
 </html>
+
+<!-- 
+<form method="POST">
+    {% csrf_token %}
+    <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+    <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
+    <button type="submit">Submit</button>
+</form>
+
+{% comment %} <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
+@ -25,7 +32,7 @@
+            background-color: #f7f7f7;
+        }
+    </style>
+</form>
+</form> {% endcomment %}
+-->

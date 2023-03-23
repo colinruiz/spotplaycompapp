@@ -3,7 +3,7 @@ import requests
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
-from .forms import MyDataForm, SecondForm, DropdownForm, DropdownForm2
+from .forms import DropdownForm
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
@@ -48,8 +48,26 @@ def spotify_callback(request):
             token_info = auth_manager.get_access_token(code)
             # Save the access token and refresh token to the cache
             auth_manager.cache_handler.save_token_to_cache(token_info)
+
+            if request.method == 'POST':
+                dropdown_form1 = DropdownForm(request.POST)
+                if dropdown_form1.is_valid():
+                    dropdown_choice = dropdown_form1.cleaned_data['choice_field']
+                    user_input = dropdown_form1.cleaned_data['text_field']
+            # Do something with the form data
+            else:
+                dropdown_form1 = DropdownForm()
+
+            if request.method == 'POST':
+                dropdown_form2 = DropdownForm(request.POST)
+                if dropdown_form2.is_valid():
+                    dropdown_choice = dropdown_form2.cleaned_data['choice_field']
+                    user_input = dropdown_form2.cleaned_data['text_field']
+            # Do something with the form data
+            else:
+                dropdown_form2 = DropdownForm()
             # Redirect the user to the success page
-            return render(request, 'success.html')
+            return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
         except Exception as e:
             # Something went wrong during the token exchange
             print(f"Token exchange error: {e}")
@@ -62,40 +80,32 @@ def spotify_callback(request):
             token_info = auth_manager.refresh_access_token(token_info['refresh_token'])
             # Save the new access token to the cache
             auth_manager.cache_handler.save_token_to_cache(token_info)
+
+            if request.method == 'POST':
+                dropdown_form1 = DropdownForm(request.POST)
+                if dropdown_form1.is_valid():
+                    dropdown_choice = dropdown_form1.cleaned_data['choice_field']
+                    user_input = dropdown_form1.cleaned_data['text_field']
+            # Do something with the form data
+            else:
+                dropdown_form1 = DropdownForm()
+
+            if request.method == 'POST':
+                dropdown_form2 = DropdownForm(request.POST)
+                if dropdown_form2.is_valid():
+                    dropdown_choice = dropdown_form2.cleaned_data['choice_field']
+                    user_input = dropdown_form2.cleaned_data['text_field']
+            # Do something with the form data
+            else:
+                dropdown_form2 = DropdownForm()
             # Redirect the user to the success page
-            return render(request, 'success.html')
+            return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
+
         else:
             # Access token is not valid, redirect the user to the Spotify login page
             auth_url = auth_manager.get_authorize_url()
             return redirect(auth_url)
         
-        
-def form(request):
-    if request.method == 'POST':
-        form = MyDataForm(request.POST)
-        if form.is_valid():
-            playlist_id = form.cleaned_data['playlist_id']
-            with open('playlist_ids.txt', 'a') as f:
-                f.write(playlist_id + '\n')
-            form.save()
-            return render(request, 'success.html', {'form': form, 'success': True})
-    else:
-        form = MyDataForm()
-    return render(request, 'success.html', {'form': form})
-
-def formtwo(request):
-    if request.method == 'POST':
-        form = SecondForm(request.POST)
-        if form.is_valid():
-            playlist_id = form.cleaned_data['playlist_id']
-            with open('playlist_ids.txt', 'a') as f:
-                f.write(playlist_id + '\n')
-            form.save()
-            return render(request, 'success.html', {'form': form, 'success': True})
-    else:
-        form = SecondForm()
-    return render(request, 'success.html', {'form': form})
-
 
 def logout_view(request):
     access_token = request.session.get('access_token')
@@ -111,26 +121,28 @@ def logout_view(request):
 
     
 def dropdown_view1(request):
+    print("View executed!")
     if request.method == 'POST':
-        dropdown_form = DropdownForm(request.POST)
-        if form.is_valid():
-            dropdown_choice = form.cleaned_data['dropdown']
-            user_input = form.cleaned_data['user_input']
+        dropdown_form1 = DropdownForm(request.POST)
+        if dropdown_form1.is_valid():
+            dropdown_choice = dropdown_form1.cleaned_data['dropdown']
             # Do something with the form data
     else:
-        dropdown_form = DropdownForm()
+        dropdown_form1 = DropdownForm()
+      # Add this line to ensure the view is executing
+    print(dropdown_form1)
     
-    return render(request, 'success.html', {'dropdown_form': dropdown_form})
+    return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1})
 
 
 def dropdown_view2(request):
     if request.method == 'POST':
-        dropdown_form = DropdownForm2(request.POST)
-        if form.is_valid():
-            dropdown_choice = form.cleaned_data['dropdown']
-            user_input = form.cleaned_data['user_input']
+        dropdown_form2 = DropdownForm(request.POST)
+        if dropdown_form2.is_valid():
+            dropdown_choice = dropdown_form2.cleaned_data['dropdown']
+            user_input = dropdown_form2.cleaned_data['user_input']
             # Do something with the form data
     else:
-        dropdown_form = DropdownForm2()
+        dropdown_form2 = DropdownForm()
     
-    return render(request, 'success.html', {'dropdown_form': dropdown_form})
+    return render(request, 'success.html', context = {'dropdown_form2': dropdown_form2})
