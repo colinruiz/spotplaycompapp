@@ -3,7 +3,7 @@ import requests
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
-from .forms import MyDataForm, SecondForm
+from .forms import MyDataForm, SecondForm, DropdownForm, DropdownForm2
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
@@ -108,3 +108,29 @@ def logout_view(request):
             # Perform any additional logout tasks
             return render(request, 'home.html')
     return render(request, 'home.html')
+
+    
+def dropdown_view1(request):
+    if request.method == 'POST':
+        dropdown_form = DropdownForm(request.POST)
+        if form.is_valid():
+            dropdown_choice = form.cleaned_data['dropdown']
+            user_input = form.cleaned_data['user_input']
+            # Do something with the form data
+    else:
+        dropdown_form = DropdownForm()
+    
+    return render(request, 'success.html', {'dropdown_form': dropdown_form})
+
+
+def dropdown_view2(request):
+    if request.method == 'POST':
+        dropdown_form = DropdownForm2(request.POST)
+        if form.is_valid():
+            dropdown_choice = form.cleaned_data['dropdown']
+            user_input = form.cleaned_data['user_input']
+            # Do something with the form data
+    else:
+        dropdown_form = DropdownForm2()
+    
+    return render(request, 'success.html', {'dropdown_form': dropdown_form})
