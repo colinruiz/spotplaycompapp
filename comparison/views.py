@@ -70,31 +70,39 @@ def spotify_callback(request):
             return redirect(auth_url)
         
         
+
 def form(request):
     if request.method == 'POST':
         form = MyDataForm(request.POST)
+        print(request.POST) # print the submitted form data
         if form.is_valid():
             playlist_id = form.cleaned_data['playlist_id']
-            with open('playlist_ids.txt', 'a') as f:
-                f.write(playlist_id + '\n')
             form.save()
-            return render(request, 'success.html', {'form': form, 'success': True})
+            context = {'form': form, 'success': True, 'playlist_id': playlist_id}
+            return render(request, 'success.html', context)
+        else:
+            print("errors")
+            print(form.errors) # print any validation errors
     else:
         form = MyDataForm()
-    return render(request, 'success.html', {'form': form})
+    context = {'form': form, 'success': True}
+    return render(request, 'success.html', context)
+
 
 def formtwo(request):
     if request.method == 'POST':
         form = SecondForm(request.POST)
         if form.is_valid():
             playlist_id = form.cleaned_data['playlist_id']
-            with open('playlist_ids.txt', 'a') as f:
-                f.write(playlist_id + '\n')
+            # with open('playlist_ids_2.txt', 'a') as f:
+            #     f.write(playlist_id + '\n')
             form.save()
-            return render(request, 'success.html', {'form': form, 'success': True})
+            context = {'form': form, 'success': True, 'playlist_id': playlist_id}
+            return render(request, 'success.html', context)
     else:
         form = SecondForm()
-    return render(request, 'success.html', {'form': form})
+    context = {'form': form}
+    return render(request, 'success.html', context)
 
 
 def logout_view(request):
@@ -108,3 +116,4 @@ def logout_view(request):
             # Perform any additional logout tasks
             return render(request, 'home.html')
     return render(request, 'home.html')
+
