@@ -70,17 +70,22 @@ def spotify_callback(request):
             return redirect(auth_url)
         
         
+
 def form(request):
     if request.method == 'POST':
         form = MyDataForm(request.POST)
+        print(request.POST) # print the submitted form data
         if form.is_valid():
             playlist_id = form.cleaned_data['playlist_id']
             form.save()
             context = {'form': form, 'success': True, 'playlist_id': playlist_id}
             return render(request, 'success.html', context)
+        else:
+            print("errors")
+            print(form.errors) # print any validation errors
     else:
         form = MyDataForm()
-    context = {'form': form}
+    context = {'form': form, 'success': True}
     return render(request, 'success.html', context)
 
 

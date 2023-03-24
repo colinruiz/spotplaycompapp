@@ -77,7 +77,7 @@
                     {% csrf_token %}
                     <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
                     <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
-                    <button type="submit">Submit</button>
+                    <input type="submit" value= "Submit">
                 </form>
 
                 {% comment %} <form method="post">
