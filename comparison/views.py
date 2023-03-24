@@ -4,12 +4,19 @@ import requests
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 from .forms import MyDataForm, SecondForm
+from django.http import HttpResponse
+
+
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
 CLIENT_SECRET = "c520c87edc224b069f8ef996a5287642"
 REDIRECT_URI = "http://127.0.0.1:8000/spotify/redirect"
 SCOPES= "user-read-playback-state app-remote-control streaming user-library-read"
+
+auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
+                                redirect_uri=REDIRECT_URI,
+                                scope=SCOPES)
 #from spotipy.cache_handler import SpotifyCacheHandler
 
 #cache_handler = SpotifyCacheHandler(cache_path=".cache")
@@ -35,9 +42,7 @@ def spotify_login(request):
 
 
 def spotify_callback(request):
-    auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
-                                redirect_uri=REDIRECT_URI,
-                                scope=SCOPES)
+    
 
     # Check if the authorization code is in the request
     if request.GET.get('code'):
@@ -73,20 +78,30 @@ def spotify_callback(request):
 
 def form(request):
     if request.method == 'POST':
-        form = MyDataForm(request.POST)
-        print(request.POST) # print the submitted form data
-        if form.is_valid():
-            playlist_id = form.cleaned_data['playlist_id']
-            form.save()
-            context = {'form': form, 'success': True, 'playlist_id': playlist_id}
-            return render(request, 'success.html', context)
-        else:
-            print("errors")
-            print(form.errors) # print any validation errors
-    else:
-        form = MyDataForm()
-    context = {'form': form, 'success': True}
-    return render(request, 'success.html', context)
+        playlist_id1 = request.POST.get('playlist_id1')
+        playlist_id2 = request.POST.get('playlist_id2')
+        if (playlist_id2=="" or playlist_id1==""):
+            return HttpResponse('fail')
+        print(playlist_id1, playlist_id2)
+        # Do something with the user_text
+        return HttpResponse('Success')
+    return render(request, 'success.html')
+    # if request.method == 'POST':
+    #     form = MyDataForm(request.POST)
+    #     print(request.POST) # print the submitted form data
+    #     if form.is_valid():
+    #         playlist_id = form.cleaned_data['playlist_id']
+    #         print(playlist_id)
+    #         form.save()
+    #         context = {'form': form, 'success': True, 'playlist_id': playlist_id}
+    #         return render(request, 'success.html', context)
+    #     else:
+    #         print("errors")
+    #         print(form.errors) # print any validation errors
+    # else:
+    #     form = MyDataForm()
+    # context = {'form': form, 'success': True}
+    #return render(request, 'success.html', context)
 
 
 def formtwo(request):

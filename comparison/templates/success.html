@@ -73,12 +73,20 @@
                 <p>Your message has been submitted successfully.</p>
                 {% endif %} {% endcomment %}
 
-                <form action="{% url 'form' %}" method="POST">
+                <form method="POST" action="{% url 'form' %}">
+                    {% csrf_token %}
+                    <input type="text" name="playlist_id1">
+                    <input type="text" name="playlist_id2">
+                    <button type="submit">Submit</button>
+                  </form>
+                  
+                
+                {% comment %}<form action="{% url 'form' %}" method="POST">
                     {% csrf_token %}
                     <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
                     <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
                     <input type="submit" value= "Submit">
-                </form>
+                </form>{% comment %}
 
                 {% comment %} <form method="post">
                     {% csrf_token %}
