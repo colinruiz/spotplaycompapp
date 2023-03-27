@@ -71,6 +71,7 @@
                 <form id = "formone" method="POST" action="{% url 'form' %}">
                     {% csrf_token %}
                     <input type="text" name="playlist_id1">
+                    <button id="submit-btn-one" type="submit">Submit</button>
                     {% comment %} <button type="submit">Submit</button> {% endcomment %}
                 </form>
             </div>
@@ -81,21 +82,23 @@
                 <form id = "formsecond" method="POST" action="{% url 'formtwo' %}">
                     {% csrf_token %}
                     <input type="text" name="playlist_id2">
+                    <button id="submit-btn-two" type="submit">Submit</button>
                 </form>
             </div>
         </div>
-        <div class="row">
+        {% comment %} <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <button id="submit-btn" type="submit">Submit</button>
             </div>
-        </div>
+        </div> {% endcomment %}
     </div>
     <script>
-        document.getElementById("submit-btn").addEventListener("click", function() {
+        document.getElementById("submit-btn-one").addEventListener("click", function() {
             document.getElementById("formone").submit();
         });
-        document.getElementById("formone").addEventListener("submit", function() {
-            document.getElementById("formsecond").submit();
+    
+        document.getElementById("submit-btn-two").addEventListener("click", function() {
+            document.getElementById("formtwo").submit();
         });
     </script>
     <br>

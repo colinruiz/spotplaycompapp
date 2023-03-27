@@ -107,38 +107,7 @@ def formtwo(request):
         # Do something with the user_text
 
     return render(request, 'success.html')
-    # if request.method == 'POST':
-    #     form = MyDataForm(request.POST)
-    #     print(request.POST) # print the submitted form data
-    #     if form.is_valid():
-    #         playlist_id = form.cleaned_data['playlist_id']
-    #         print(playlist_id)
-    #         form.save()
-    #         context = {'form': form, 'success': True, 'playlist_id': playlist_id}
-    #         return render(request, 'success.html', context)
-    #     else:
-    #         print("errors")
-    #         print(form.errors) # print any validation errors
-    # else:
-    #     form = MyDataForm()
-    # context = {'form': form, 'success': True}
-    #return render(request, 'success.html', context)
 
-
-# def formtwo(request):
-#     if request.method == 'POST':
-#         form = SecondForm(request.POST)
-#         if form.is_valid():
-#             playlist_id = form.cleaned_data['playlist_id']
-#             # with open('playlist_ids_2.txt', 'a') as f:
-#             #     f.write(playlist_id + '\n')
-#             form.save()
-#             context = {'form': form, 'success': True, 'playlist_id': playlist_id}
-#             return render(request, 'success.html', context)
-#     else:
-#         form = SecondForm()
-#     context = {'form': form}
-#     return render(request, 'success.html', context)
 
 
 def logout_view(request):
@@ -155,6 +124,8 @@ def logout_view(request):
 
 
 def comparePlaylists(playlist1_id, playlist2_id):
+    
+    
     
     # scopes for auth_manager
     scope = "user-read-playback-state app-remote-control streaming user-library-read"
@@ -188,3 +159,37 @@ def comparePlaylists(playlist1_id, playlist2_id):
             count+=1
         
     return "The two playlists have "+str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
+
+
+    # if request.method == 'POST':
+    #     form = MyDataForm(request.POST)
+    #     print(request.POST) # print the submitted form data
+    #     if form.is_valid():
+    #         playlist_id = form.cleaned_data['playlist_id']
+    #         print(playlist_id)
+    #         form.save()
+    #         context = {'form': form, 'success': True, 'playlist_id': playlist_id}
+    #         return render(request, 'success.html', context)
+    #     else:
+    #         print("errors")
+    #         print(form.errors) # print any validation errors
+    # else:
+    #     form = MyDataForm()
+    # context = {'form': form, 'success': True}
+    #return render(request, 'success.html', context)
+
+
+# def formtwo(request):
+#     if request.method == 'POST':
+#         form = SecondForm(request.POST)
+#         if form.is_valid():
+#             playlist_id = form.cleaned_data['playlist_id']
+#             # with open('playlist_ids_2.txt', 'a') as f:
+#             #     f.write(playlist_id + '\n')
+#             form.save()
+#             context = {'form': form, 'success': True, 'playlist_id': playlist_id}
+#             return render(request, 'success.html', context)
+#     else:
+#         form = SecondForm()
+#     context = {'form': form}
+#     return render(request, 'success.html', context)
