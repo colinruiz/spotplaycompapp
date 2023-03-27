@@ -103,14 +103,9 @@ def formtwo(request):
         # print(playlist_id1, playlist_id2)
         # Do something with the user_text
         #return HttpResponse('Success')
-=======
-        playlist_id2 = request.POST.get('playlist_id2')
-        if (playlist_id2=="" or playlist_id1==""):
-            return HttpResponse('fail')
         
         # Do something with the user_text
-        return HttpResponse(comparePlaylists(playlist_id1, playlist_id2))
->>>>>>> 1eb9949042e733634c8c06ce52dbb8f5f0f3eef0
+
     return render(request, 'success.html')
     # if request.method == 'POST':
     #     form = MyDataForm(request.POST)
