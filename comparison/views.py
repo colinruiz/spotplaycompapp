@@ -1,5 +1,7 @@
 from django.shortcuts import render
 import requests
+import base64
+import spotipy
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
@@ -9,15 +11,22 @@ from .forms import DropdownForm
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
 CLIENT_SECRET = "c520c87edc224b069f8ef996a5287642"
 REDIRECT_URI = "http://127.0.0.1:8000/spotify/redirect"
-SCOPES= "user-read-playback-state app-remote-control streaming user-library-read"
-#from spotipy.cache_handler import SpotifyCacheHandler
+SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
 
-#cache_handler = SpotifyCacheHandler(cache_path=".cache")
 
 def home(request):
     return render(request, 'home.html')
 
 def spotify_login(request):
+
+    #client_id = CLIENT_ID
+    #redirect_uri = REDIRECT_URI
+    #scope = SCOPES
+    #auth_url = f'https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope={scope}'
+    #return redirect(auth_url)
+
+
+
     auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
                                 redirect_uri=REDIRECT_URI,
                                 scope=SCOPES, show_dialog=True)
@@ -35,6 +44,33 @@ def spotify_login(request):
 
 
 def spotify_callback(request):
+
+    
+    #client_id = CLIENT_ID
+    #client_secret = CLIENT_SECRET
+    #redirect_uri = REDIRECT_URI
+    #code = request.GET.get('code')
+    #auth_header = f'{client_id}:{client_secret}'
+    #b64_auth_header = base64.b64encode(auth_header.encode('ascii')).decode('ascii')
+    #headers = {'Authorization': f'Basic {b64_auth_header}'}
+    #data = {'grant_type': 'authorization_code', 'code': code, 'redirect_uri': redirect_uri}
+    #response = requests.post('https://accounts.spotify.com/api/token', headers=headers, data=data)
+    #token = response.json()['access_token']
+    #return redirect('/playlists')
+
+
+#def playlists(request):
+    #auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI, scope=SCOPES)
+    #sp = spotipy.Spotify(auth_manager=auth_manager)
+    #playlists = sp.current_user_playlists()
+    #CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
+    #dropdown_form1 = DropdownForm(choices=CHOICES)
+    #dropdown_form2 = DropdownForm(choices=CHOICES)
+    #return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
+
+
+
+
     auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
                                 redirect_uri=REDIRECT_URI,
                                 scope=SCOPES)
