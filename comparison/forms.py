@@ -98,29 +98,9 @@ import os
     #return id_name, playlists
 
 
-client_credentials_manager = SpotifyClientCredentials(
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET
-)
-sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-
-
-playlists = []
-results = sp.current_user_playlists()
-while results:
-    playlists.extend(results['items'])
-    if results['next']:
-        results = sp.next(results)
-    else:
-        break
-
-
 class DropdownForm(forms.Form):
-    CHOICES = [
-        ('1', 'Option 1'),
-        ('2', 'Option 2'),
-        ('other', 'Other')
-    ]
+    CHOICES = [('option 1', 'Option 1'), ('option 2', 'Option 2'), ('other', 'Other')]
+
     choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
     text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
 
