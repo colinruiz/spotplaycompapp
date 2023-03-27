@@ -8,7 +8,7 @@ import os
 #from .views import getUserPlaylist
 
 
-SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
+#SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
 
 
 
@@ -116,12 +116,11 @@ while results:
 
 
 class DropdownForm(forms.Form):
-    # playlists = []
-    # playlists.extend(getUserPlaylist())
-    #id_name, playlists = getUserPlaylist()
-    
-    CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
-
+    CHOICES = [
+        ('1', 'Option 1'),
+        ('2', 'Option 2'),
+        ('other', 'Other')
+    ]
     choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
     text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
 
