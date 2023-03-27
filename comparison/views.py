@@ -4,6 +4,8 @@ import requests
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 from .forms import DropdownForm
+import os
+import spotipy
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
@@ -147,3 +149,7 @@ def dropdown_view2(request):
         dropdown_form2 = DropdownForm()
     
     return render(request, 'success.html', context = {'dropdown_form2': dropdown_form2})
+
+
+
+
