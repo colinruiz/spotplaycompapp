@@ -68,20 +68,22 @@
     <br>
     <div class="enter-playlists">
         <div class="row">
-            <div class="col-3 playlist-one">
+            <div class="col-3 playlist-one" style="padding-left: 5%;">
                 <form id="dropdown1" method="post">
                     {% csrf_token %}
                     {{ dropdown_form1 }}
+                    <br>
                     <button type="submit" class="btn btn-success">Submit</button>
                 </form>                                    
             </div>           
             <div class="col-6 d-flex justify-content-center similar-songs-col">
                 <p>This is where similar songs go</p>
             </div>
-            <div class="col-3 playlist-two">
+            <div class="col-3 playlist-two" style="padding-right: 5%;">
                 <form id="dropdown2" method="post">
                     {% csrf_token %}
                     {{ dropdown_form2 }}
+                    <br>
                     <button type="submit" class="btn btn-success">Submit</button>
                 </form>              
             </div>
