@@ -65,82 +65,39 @@
     <div class="enter-playlists">
         <div class="row">
             <div class="col-4 d-flex justify-content-center playlist-one">
-                {% if success %}
-                <p>Your playlist ID is: {{ playlist_id }}</p>
-                {% endif %}
-
                 {% comment %} {% if success %}
-                <p>Your message has been submitted successfully.</p>
+                    <p>Your playlist ID is: {{ playlist_id }}</p>
                 {% endif %} {% endcomment %}
-
-                <form method="POST" action="{% url 'form' %}">
+                <form id = "formone" method="POST" action="{% url 'form' %}">
                     {% csrf_token %}
                     <input type="text" name="playlist_id1">
-                    <input type="text" name="playlist_id2">
-                    <button type="submit">Submit</button>
-                  </form>
-                  
-                
-                {% comment %}<form action="{% url 'form' %}" method="POST">
-                    {% csrf_token %}
-                    <label class="form-field" for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
-                    <input class="form-field" type="text" name="{{ form.playlist_id.name }}" value="{{ form.playlist_id.value|default:'' }}">
-                    <input type="submit" value= "Submit">
-                </form>{% comment %}
-
-                {% comment %} <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
-                    <br>
-                    <br>
-                    {{ form.playlist_id }}
-                    <button type="submit">Submit</button>
-                    <style>
-                        input[type="text"] {
-                            border: 1px solid #ccc;
-                            padding: 5px;
-                            border-radius: 5px;
-                            background-color: #f7f7f7;
-                        }
-                    </style>
-                </form> {% endcomment %}
+                    {% comment %} <button type="submit">Submit</button> {% endcomment %}
+                </form>
             </div>
             <div class="col-4 d-flex justify-content-center similar-songs-col">
                 <p>This is where similar songs go</p>
             </div>
             <div class="col-4 d-flex justify-content-center playlist-two">
-                {% comment %} {% if success %}
-                <p>Your message has been submitted successfully.</p>
-                {% endif %} {% endcomment %}
-
-                <form action="{% url 'formtwo' %}" method="POST">
-                {% csrf_token %}
-                    <label class="form-field" for="{{ formtwo.playlist_id.id_for_label }}">Enter playlist ID:</label>
-                    <input class="form-field" type="text" name="{{ formtwo.playlist_id.name }}" value="{{ formtwo.playlist_id.value|default:'' }}">
-                    <button type="submit">Submit</button>
-                </form>
-
-                {% comment %} <form method="post">
+                <form id = "formsecond" method="POST" action="{% url 'formtwo' %}">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <label for="{{ form.playlist_id.id_for_label }}">Enter playlist ID:</label>
-                    <br>
-                    <br>
-                    {{ form.playlist_id }}
-                    <button type="submit">Submit</button>
-                    <style>
-                        input[type="text"] {
-                            border: 1px solid #ccc;
-                            padding: 5px;
-                            border-radius: 5px;
-                            background-color: #f7f7f7;
-                        }
-                    </style>
-                </form> {% endcomment %}
+                    <input type="text" name="playlist_id2">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <button id="submit-btn" type="submit">Submit</button>
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("submit-btn").addEventListener("click", function() {
+            document.getElementById("formone").submit();
+        });
+        document.getElementById("formone").addEventListener("submit", function() {
+            document.getElementById("formsecond").submit();
+        });
+    </script>
     <br>
     <br>
 </body>

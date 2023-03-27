@@ -79,12 +79,28 @@ def spotify_callback(request):
 def form(request):
     if request.method == 'POST':
         playlist_id1 = request.POST.get('playlist_id1')
-        playlist_id2 = request.POST.get('playlist_id2')
-        if (playlist_id2=="" or playlist_id1==""):
-            return HttpResponse('fail')
-        print(playlist_id1, playlist_id2)
+        # playlist_id2 = request.POST.get('playlist_id2')
+        with open('playlist_id1.txt', 'w') as f:
+            f.write(playlist_id1)
+        # if (playlist_id2=="" or playlist_id1==""):
+        #     return HttpResponse('fail')
+        # print(playlist_id1, playlist_id2)
         # Do something with the user_text
-        return HttpResponse('Success')
+        #return HttpResponse('Success')
+        print(playlist_id1)
+    return render(request, 'success.html')
+
+def formtwo(request):
+    if request.method == 'POST':
+        playlist_id2 = request.POST.get('playlist_id2')
+        # playlist_id2 = request.POST.get('playlist_id2')
+        with open('playlist_id2.txt', 'w') as f:
+            f.write(playlist_id2)
+        # if (playlist_id2=="" or playlist_id1==""):
+        #     return HttpResponse('fail')
+        # print(playlist_id1, playlist_id2)
+        # Do something with the user_text
+        #return HttpResponse('Success')
     return render(request, 'success.html')
     # if request.method == 'POST':
     #     form = MyDataForm(request.POST)
@@ -104,20 +120,20 @@ def form(request):
     #return render(request, 'success.html', context)
 
 
-def formtwo(request):
-    if request.method == 'POST':
-        form = SecondForm(request.POST)
-        if form.is_valid():
-            playlist_id = form.cleaned_data['playlist_id']
-            # with open('playlist_ids_2.txt', 'a') as f:
-            #     f.write(playlist_id + '\n')
-            form.save()
-            context = {'form': form, 'success': True, 'playlist_id': playlist_id}
-            return render(request, 'success.html', context)
-    else:
-        form = SecondForm()
-    context = {'form': form}
-    return render(request, 'success.html', context)
+# def formtwo(request):
+#     if request.method == 'POST':
+#         form = SecondForm(request.POST)
+#         if form.is_valid():
+#             playlist_id = form.cleaned_data['playlist_id']
+#             # with open('playlist_ids_2.txt', 'a') as f:
+#             #     f.write(playlist_id + '\n')
+#             form.save()
+#             context = {'form': form, 'success': True, 'playlist_id': playlist_id}
+#             return render(request, 'success.html', context)
+#     else:
+#         form = SecondForm()
+#     context = {'form': form}
+#     return render(request, 'success.html', context)
 
 
 def logout_view(request):
