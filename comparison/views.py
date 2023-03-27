@@ -126,6 +126,7 @@ def dropdown_view1(request):
         dropdown_form1 = DropdownForm(request.POST)
         if dropdown_form1.is_valid():
             dropdown_choice = dropdown_form1.cleaned_data['dropdown']
+            user_input = dropdown_form1.cleaned_data['user_input']
             # Do something with the form data
     else:
         dropdown_form1 = DropdownForm()
