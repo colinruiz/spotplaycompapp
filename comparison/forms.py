@@ -5,14 +5,10 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 from spotipy.oauth2 import SpotifyOAuth
 import os
-#from .views import getUserPlaylist
+from .views import getUserPlaylist
 
-<<<<<<< HEAD
 
-class DropdownForm(forms.Form):
-    CHOICES = [('other', 'Other')]
-=======
-SCOPES= "user-read-playback-state app-remote-control streaming user-library-read"
+SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
 
 
 
@@ -107,7 +103,6 @@ class DropdownForm(forms.Form):
     id_name, playlists = getUserPlaylist()
     
     CHOICES = [(playlist['id'], playlist['name']) for playlist in id_name] + [('other', 'Other')]
->>>>>>> 6d210206ae28c53136319db8d2cbae99d7b389a9
 
     choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
     text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
