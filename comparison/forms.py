@@ -99,11 +99,13 @@ import os
 
 
 class DropdownForm(forms.Form):
-    CHOICES = [('option 1', 'Option 1'), ('option 2', 'Option 2'), ('other', 'Other')]
 
-    choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
+    choice_field = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
     text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
 
+    def __init__(self, choices, *args, **kwargs):
+        super(DropdownForm, self).__init__(*args, **kwargs)
+        self.fields['choice_field'].choices = choices
 
 
 
