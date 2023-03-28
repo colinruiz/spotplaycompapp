@@ -105,12 +105,17 @@ def formtwo(request):
         #return HttpResponse('Success')
         
         # Do something with the user_text
-
+        print(playlist_id2)
     return render(request, 'success.html')
 
 
 
 def logout_view(request):
+    with open("playlist_id1.txt") as f:
+        id1 = f.read()
+    with open("playlist_id2.txt") as f:
+        id2 = f.read()
+    print(comparePlaylists(id1, id2))
     access_token = request.session.get('access_token')
     if access_token:
         revoke_url = 'https://accounts.spotify.com/api/token/revoke'
@@ -124,8 +129,6 @@ def logout_view(request):
 
 
 def comparePlaylists(playlist1_id, playlist2_id):
-    
-    
     
     # scopes for auth_manager
     scope = "user-read-playback-state app-remote-control streaming user-library-read"
