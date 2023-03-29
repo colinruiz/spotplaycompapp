@@ -166,12 +166,12 @@ def compare_playlists(request):
             count+=1
         
     similarity = "The two playlists have " +str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
-    return HttpResponse(similarity)
-
-def calculate_playlists(request):
-    response = compare_playlists(request)
-    similarity = response.content.decode('utf-8')
     return render(request, 'success.html', {'similarity': similarity})
+
+# def calculate_playlists(request):
+#     response = compare_playlists(request)
+#     similarity = response.content.decode('utf-8')
+#     return render(request, 'success.html', {'similarity': similarity})
 
 
     # if request.method == 'POST':
