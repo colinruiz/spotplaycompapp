@@ -53,10 +53,20 @@
         </div>
         <div class="row">
             <div class="col d-flex justify-content-center calculate-button">
-                <form method="post" action="{% url 'logout_view' %}">
+                <form method="post" action="{% url 'compare_playlists' %}">
                     {% csrf_token %}
-                    <button class="center btn btn-success" type="submit">Calculate Similarity</button>
+                    <button class="center btn btn-success" type="submit">
+                        Calculate Similarity: 
+                    </button>
                 </form>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+              {% if similarity is not None and similarity != '' %}
+                <p class="text-center">{{ similarity }}</p>
+              {% endif %}
             </div>
         </div>
     </div>

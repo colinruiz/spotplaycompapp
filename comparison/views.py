@@ -111,11 +111,11 @@ def formtwo(request):
 
 
 def logout_view(request):
-    with open("playlist_id1.txt") as f:
-        id1 = f.read()
-    with open("playlist_id2.txt") as f:
-        id2 = f.read()
-    print(comparePlaylists(id1, id2))
+    # with open("playlist_id1.txt") as f:
+    #     id1 = f.read()
+    # with open("playlist_id2.txt") as f:
+    #     id2 = f.read()
+    # print(comparePlaylists(id1, id2))
     access_token = request.session.get('access_token')
     if access_token:
         revoke_url = 'https://accounts.spotify.com/api/token/revoke'
@@ -128,7 +128,11 @@ def logout_view(request):
     return render(request, 'home.html')
 
 
-def comparePlaylists(playlist1_id, playlist2_id):
+def compare_playlists(request):
+    with open('playlist_id1.txt', 'r') as f:
+        playlist1_id = f.read()
+    with open('playlist_id2.txt', 'r') as f:
+        playlist2_id = f.read()
     
     # scopes for auth_manager
     scope = "user-read-playback-state app-remote-control streaming user-library-read"
@@ -161,7 +165,13 @@ def comparePlaylists(playlist1_id, playlist2_id):
         if i in list2:
             count+=1
         
-    return "The two playlists have "+str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
+    similarity = "The two playlists have " +str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
+    return HttpResponse(similarity)
+
+def calculate_playlists(request):
+    response = compare_playlists(request)
+    similarity = response.content.decode('utf-8')
+    return render(request, 'success.html', {'similarity': similarity})
 
 
     # if request.method == 'POST':
