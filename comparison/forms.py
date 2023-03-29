@@ -1,14 +1,37 @@
 from django import forms
-from .models import Dropdown
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
-from spotipy.oauth2 import SpotifyOAuth
-import os
-#from .views import getUserPlaylist
+from .models import MyData, Second
+
+class MyDataForm(forms.ModelForm):
+    #playlist_id = forms.CharField(max_length=100)
+    playlist_id = forms.CharField(label = "Playlist ID", max_length=100)
+    #playlist_id_2 = forms.CharField(label = "Playlist ID 2")
+    
+    
+    class Meta:
+        model = MyData
+        fields = ['playlist_id']
+        
+class SecondForm(forms.ModelForm):
+    #playlist_id = forms.CharField(max_length=100)
+    playlist_id = forms.CharField(label = "Playlist ID", max_length=100)
+    
+    class Meta:
+        model = Second
+        fields = ['playlist_id']
 
 
-SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
+
+# from django import forms
+# from .models import Dropdown
+# import spotipy
+# from spotipy.oauth2 import SpotifyClientCredentials
+# from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+# from spotipy.oauth2 import SpotifyOAuth
+# import os
+# #from .views import getUserPlaylist
+
+
+# SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
 
 
 
@@ -98,32 +121,32 @@ SCOPES= "user-read-playback-state app-remote-control streaming user-library-read
     #return id_name, playlists
 
 
-client_credentials_manager = SpotifyClientCredentials(
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET
-)
-sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+# client_credentials_manager = SpotifyClientCredentials(
+#     client_id=CLIENT_ID,
+#     client_secret=CLIENT_SECRET
+# )
+# sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
-playlists = []
-results = sp.current_user_playlists()
-while results:
-    playlists.extend(results['items'])
-    if results['next']:
-        results = sp.next(results)
-    else:
-        break
+# playlists = []
+# results = sp.current_user_playlists()
+# while results:
+#     playlists.extend(results['items'])
+#     if results['next']:
+#         results = sp.next(results)
+#     else:
+#         break
 
 
-class DropdownForm(forms.Form):
-    # playlists = []
-    # playlists.extend(getUserPlaylist())
-    #id_name, playlists = getUserPlaylist()
+# class DropdownForm(forms.Form):
+#     # playlists = []
+#     # playlists.extend(getUserPlaylist())
+#     #id_name, playlists = getUserPlaylist()
     
-    CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
+#     CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
 
-    choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
-    text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
+#     choice_field = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
+#     text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
 
 
 
