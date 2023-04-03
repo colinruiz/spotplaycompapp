@@ -139,7 +139,7 @@ def logout_view(request):
 
 
     
-def dropdown_view1(request):
+def form(request):
     print("View executed!")
     if request.method == 'POST':
         playlist_id1 = request.POST.get('playlist_id1')
