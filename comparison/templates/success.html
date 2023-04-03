@@ -59,7 +59,7 @@
             <div class="col d-flex justify-content-center calculate-button">
                 <form method="post" action="{% url 'compare_playlists' %}">
                     {% csrf_token %}
-                    <button class="center btn btn-success" type="submit">Calculate Similarity</button>
+                    <button class="center btn btn-success" type="submit btn">Calculate Similarity</button>
                 </form>
             </div>
         </div>
@@ -90,7 +90,8 @@
                     <form id = "formone" method="POST" action="{% url 'form' %}">
                         {% csrf_token %}
                         {{ dropdown_form1 }}
-                        <button id="submit-btn-one" type="submit">Submit</button>
+                        <br>
+                        <button id="submit-btn-one" class="btn btn-success" type="submit">Submit</button>
                     </form>
                 </div>
                 <div class="col-6 d-flex justify-content-center similar-songs-col">
@@ -100,7 +101,8 @@
                     <form id = "formsecond" method="POST" action="{% url 'formtwo' %}">
                         {% csrf_token %}
                         {{ dropdown_form2 }}
-                        <button id="submit-btn-two" type="submit">Submit</button>
+                        <br>
+                        <button id="submit-btn-two" class="btn btn-success" type="submit">Submit</button>
                     </form>
                 </div>
             </div>
