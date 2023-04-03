@@ -138,34 +138,78 @@ def logout_view(request):
 #AQCvTlniNN9o-OTmwmS5BnD2J3edhgAdndaJjsDvat9AV6IdVrogKEnuXrneNLZgCuo5-Zs9LHj-WQO2IS56gq6bd665pzLqqArMN_ce_scyoPSMdEya_OTYmmq3A_GGDhA
 
 
-    
-def dropdown_view1(request):
+def form(request):
     print("View executed!")
     if request.method == 'POST':
-        dropdown_form1 = DropdownForm(request.POST)
-        if dropdown_form1.is_valid():
-            dropdown_choice = dropdown_form1.cleaned_data['dropdown']
-            # Do something with the form data
-    else:
-        dropdown_form1 = DropdownForm()
-      # Add this line to ensure the view is executing
-    print(dropdown_form1)
-    
-    return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1})
+        playlist_id1 = request.POST.get('playlist_id1')
+        # playlist_id2 = request.POST.get('playlist_id2')
+        with open('playlist_id1.txt', 'w') as f:
+            f.write(playlist_id1)
+        # if (playlist_id2=="" or playlist_id1==""):
+        #     return HttpResponse('fail')
+        # print(playlist_id1, playlist_id2)
+        # Do something with the user_text
+        #return HttpResponse('Success')
+        print(playlist_id1)
+    return render(request, 'success.html')
 
-
-def dropdown_view2(request):
+def formtwo(request):
     if request.method == 'POST':
-        dropdown_form2 = DropdownForm(request.POST)
-        if dropdown_form2.is_valid():
-            dropdown_choice = dropdown_form2.cleaned_data['dropdown']
-            user_input = dropdown_form2.cleaned_data['user_input']
-            # Do something with the form data
-    else:
-        dropdown_form2 = DropdownForm()
-    
-    return render(request, 'success.html', context = {'dropdown_form2': dropdown_form2})
+        playlist_id2 = request.POST.get('playlist_id2')
+        # playlist_id2 = request.POST.get('playlist_id2')
+        with open('playlist_id2.txt', 'w') as f:
+            f.write(playlist_id2)
+        # if (playlist_id2=="" or playlist_id1==""):
+        #     return HttpResponse('fail')
+        # print(playlist_id1, playlist_id2)
+        # Do something with the user_text
+        #return HttpResponse('Success')
+        
+        # Do something with the user_text
+        print(playlist_id2)
+    return render(request, 'success.html')
 
+def compare_playlists(request):
+    with open('playlist_id1.txt', 'r') as f:
+        playlist1_id = f.read()
+    with open('playlist_id2.txt', 'r') as f:
+        playlist2_id = f.read()
+    
+    # scopes for auth_manager
+    scope = "user-read-playback-state app-remote-control streaming user-library-read"
+
+    #sp = spotipy.Spotify(auth_manager)
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=scope, redirect_uri=REDIRECT_URI))
+    #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
+
+    # counts the number of shared tracks
+    count=0
+    # gets playlist lengths
+    length1=sp.playlist(playlist1_id)['tracks']['total']
+    length2=sp.playlist(playlist2_id)['tracks']['total']
+    # iterates through playlists and adds to a list to be compared
+    list2 = []
+    for k in range((length2//100)+1):
+        playlist2=sp.playlist_tracks(playlist2_id, limit=100, offset=100*k)['items']
+        for a in playlist2:
+            list2.append(a['track']['id'])
+                
+    list1 = []
+    for i in range((length1//100)+1):
+        playlist1=sp.playlist_tracks(playlist1_id, limit=100, offset=100*i)['items']
+        for a in playlist1:
+            list1.append(a['track']['id'])
+
+    # finds the number of common tracks
+    for i in list1:
+        #print(i)
+        if i in list2:
+            count+=1
+        
+    similarity = "The two playlists have " +str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
+    return render(request, 'success.html', {'similarity': similarity})
+
+    
 
 
 
