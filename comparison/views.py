@@ -9,6 +9,7 @@ from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 import os
 import spotipy
 from django.http import HttpResponse
+from django.views.decorators.cache import never_cache
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
