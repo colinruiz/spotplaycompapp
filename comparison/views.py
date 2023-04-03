@@ -2,6 +2,7 @@ from django.shortcuts import render
 import requests
 import base64
 import spotipy
+import spotipy.util as util
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
