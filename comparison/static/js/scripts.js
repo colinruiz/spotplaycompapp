@@ -19,6 +19,11 @@ function showInput(selectElement) {
       if (inputElement && inputElement.tagName === "INPUT") {
         inputElement.remove();
       }
+      if (selectElement.form.id === 'formone') {
+        selectElement.name = "playlist_id1";
+      } else {
+        selectElement.name = "playlist_id2";
+      }
     }
   }
   

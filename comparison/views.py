@@ -147,7 +147,7 @@ def form(request):
         # Do something with the user_text
         #return HttpResponse('Success')
         print(playlist_id1)
-    return render(request, 'success.html')
+    return redirect('success')
 
 def formtwo(request):
     if request.method == 'POST':
@@ -163,7 +163,7 @@ def formtwo(request):
         
         # Do something with the user_text
         print(playlist_id2)
-    return render(request, 'success.html')
+    return redirect('success')
 
 def compare_playlists(request):
     with open('playlist_id1.txt', 'r') as f:
