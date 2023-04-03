@@ -5,7 +5,7 @@ import spotipy
 # Create your views here.
 from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
-# from .forms import DropdownForm
+from .forms import DropdownForm
 import os
 import spotipy
 from django.http import HttpResponse
@@ -27,17 +27,9 @@ def home(request):
 
 def spotify_login(request):
 
-    #client_id = CLIENT_ID
-    #redirect_uri = REDIRECT_URI
-    #scope = SCOPES
-    #auth_url = f'https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope={scope}'
-    #return redirect(auth_url)
-
-
-
     auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
-                                redirect_uri=REDIRECT_URI,
-                                scope=SCOPES, show_dialog=True)
+        redirect_uri=REDIRECT_URI,
+        scope=SCOPES, show_dialog=True)
 
     # If there is no authorization code, redirect the user to the Spotify login page
     # if not request.GET.get('code'):
@@ -46,10 +38,10 @@ def spotify_login(request):
 
     auth_url = auth_manager.get_authorize_url()
     return redirect(auth_url)
+
     # If there is an authorization code, exchange it for an access token and refresh token
     # auth_manager.get_access_token(request.GET.get('code'))
     # return render(request, 'success.html')
-
 
 @never_cache
 def spotify_callback(request):
@@ -99,7 +91,34 @@ def spotify_callback(request):
     request.session['choices'] = CHOICES
 
     return redirect('success')
+
+
+
+@never_cache
+def success(request):
+    # Set up the authentication credentials
+
+    print(request.session['access_token'])
+    print(request.session['refresh_token'])
+    print(request.session['choices'])
+
+
+    access_token = request.session.get('access_token')
+    sp = spotipy.Spotify(auth=access_token)
     
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    playlists_response = requests.get('https://api.spotify.com/v1/me/playlists', headers=headers)
+    playlists = playlists_response.json()['items']
+
+    dropdown_form1 = DropdownForm(choices=request.session.get('choices', []))
+    dropdown_form2 = DropdownForm(choices=request.session.get('choices', []))
+
+    
+    # Render the success template with the playlist names
+    return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
+        
 
 def logout_view(request):
     access_token = request.session.get('access_token')
@@ -109,9 +128,18 @@ def logout_view(request):
         response = requests.delete(revoke_url, params=params)
         if response.status_code == 200:
             del request.session['access_token']
+            del request.session['refresh_token']
+            del request.session['choices']
             # Perform any additional logout tasks
             return render(request, 'home.html')
+
+    del request.session['access_token']
+    del request.session['refresh_token']
+    del request.session['choices']
+
     return render(request, 'home.html')
+
+
 
 def form(request):
     if request.method == 'POST':
