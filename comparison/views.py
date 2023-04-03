@@ -93,20 +93,6 @@ def spotify_callback(request):
 def success(request):
     # Set up the authentication credentials
 
-    print(request.session['access_token'])
-    print(request.session['refresh_token'])
-    print(request.session['choices'])
-
-
-    access_token = request.session.get('access_token')
-    sp = spotipy.Spotify(auth=access_token)
-    
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
-    playlists_response = requests.get('https://api.spotify.com/v1/me/playlists', headers=headers)
-    playlists = playlists_response.json()['items']
-
     dropdown_form1 = DropdownForm(choices=request.session.get('choices', []))
     dropdown_form2 = DropdownForm(choices=request.session.get('choices', []))
 
@@ -139,20 +125,28 @@ def logout_view(request):
 
 
     
-def form(request):
-    print("View executed!")
-    if request.method == 'POST':
-        playlist_id1 = request.POST.get('playlist_id1')
+#def form(request):
+    #print("View executed!")
+    #if request.method == 'POST':
+        #playlist_id1 = request.POST.get('playlist_id1')
+
+
         # playlist_id2 = request.POST.get('playlist_id2')
-        with open('playlist_id1.txt', 'w') as f:
-            f.write(playlist_id1)
+
+
+        #with open('playlist_id1.txt', 'w') as f:
+            #f.write(playlist_id1)
+
+
         # if (playlist_id2=="" or playlist_id1==""):
         #     return HttpResponse('fail')
         # print(playlist_id1, playlist_id2)
         # Do something with the user_text
         #return HttpResponse('Success')
-        print(playlist_id1)
-    return render(request, 'success.html')
+
+
+        #print(playlist_id1)
+    #return render(request, 'success.html')
 
 def formtwo(request):
     if request.method == 'POST':
