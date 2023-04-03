@@ -50,103 +50,55 @@ def spotify_login(request):
     # return render(request, 'success.html')
 
 
+@never_cache
 def spotify_callback(request):
-
     
-    #client_id = CLIENT_ID
-    #client_secret = CLIENT_SECRET
-    #redirect_uri = REDIRECT_URI
-    #code = request.GET.get('code')
-    #auth_header = f'{client_id}:{client_secret}'
-    #b64_auth_header = base64.b64encode(auth_header.encode('ascii')).decode('ascii')
-    #headers = {'Authorization': f'Basic {b64_auth_header}'}
-    #data = {'grant_type': 'authorization_code', 'code': code, 'redirect_uri': redirect_uri}
-    #response = requests.post('https://accounts.spotify.com/api/token', headers=headers, data=data)
-    #token = response.json()['access_token']
-    #return redirect('/playlists')
+    auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
+                                redirect_uri=REDIRECT_URI,
+                                scope=SCOPES)
 
-
-#def playlists(request):
-    #auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI, scope=SCOPES)
-    #sp = spotipy.Spotify(auth_manager=auth_manager)
-    #playlists = sp.current_user_playlists()
-    #CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
-    #dropdown_form1 = DropdownForm(choices=CHOICES)
-    #dropdown_form2 = DropdownForm(choices=CHOICES)
-    #return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
-
-
-
-
+    client_id = CLIENT_ID
+    client_secret = CLIENT_SECRET
+    redirect_uri = REDIRECT_URI
+    
+    # Exchange the authentication code for an access token and refresh token
+    code = request.GET.get('code')
+    #sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=SCOPES)
+    token_info = auth_manager.get_access_token(code)
 
     # Check if the authorization code is in the request
-    if request.GET.get('code'):
+    if not token_info['access_token']:
         try:
-            # Get the authorization code from the request
             code = request.GET['code']
             # Exchange the authorization code for an access token and a refresh token
             token_info = auth_manager.get_access_token(code)
-            # Save the access token and refresh token to the cache
-            auth_manager.cache_handler.save_token_to_cache(token_info)
-            return render(request, 'success.html')
 
-            # if request.method == 'POST':
-            #     dropdown_form1 = DropdownForm(request.POST)
-            #     if dropdown_form1.is_valid():
-            #         dropdown_choice = dropdown_form1.cleaned_data['choice_field']
-            #         user_input = dropdown_form1.cleaned_data['text_field']
-            # # Do something with the form data
-            # else:
-            #     dropdown_form1 = DropdownForm()
-
-            # if request.method == 'POST':
-            #     dropdown_form2 = DropdownForm(request.POST)
-            #     if dropdown_form2.is_valid():
-            #         dropdown_choice = dropdown_form2.cleaned_data['choice_field']
-            #         user_input = dropdown_form2.cleaned_data['text_field']
-            # # Do something with the form data
-            # else:
-            #     dropdown_form2 = DropdownForm()
-            # # Redirect the user to the success page
-            # return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
         except Exception as e:
             # Something went wrong during the token exchange
             print(f"Token exchange error: {e}")
             return render(request, 'failure.html')
-    else:
-        # Check if the access token is still valid
-        token_info = auth_manager.cache_handler.get_cached_token()
-        if auth_manager.validate_token(token_info):
-            # Access token is still valid, refresh it
-            token_info = auth_manager.refresh_access_token(token_info['refresh_token'])
-            # Save the new access token to the cache
-            auth_manager.cache_handler.save_token_to_cache(token_info)
+    
+    # Save the access token and refresh token in the session
+    request.session['access_token'] = token_info['access_token']
+    request.session['refresh_token'] = token_info['refresh_token']
 
-            # if request.method == 'POST':
-            #     dropdown_form1 = DropdownForm(request.POST)
-            #     if dropdown_form1.is_valid():
-            #         dropdown_choice = dropdown_form1.cleaned_data['choice_field']
-            #         user_input = dropdown_form1.cleaned_data['text_field']
-            # # Do something with the form data
-            # else:
-            #     dropdown_form1 = DropdownForm()
-
-            # if request.method == 'POST':
-            #     dropdown_form2 = DropdownForm(request.POST)
-            #     if dropdown_form2.is_valid():
-            #         dropdown_choice = dropdown_form2.cleaned_data['choice_field']
-            #         user_input = dropdown_form2.cleaned_data['text_field']
-            # # Do something with the form data
-            # else:
-            #     dropdown_form2 = DropdownForm()
-            # # Redirect the user to the success page
-            # return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
-            return render(request, 'success.html')
+    # Use spotipy to get the user's playlists
+    access_token = token_info['access_token']
+    sp = spotipy.Spotify(auth=access_token)
+    playlists = []
+    results = sp.current_user_playlists()
+    while results:
+        playlists.extend(results['items'])
+        if results['next']:
+            results = sp.next(results)
         else:
-            # Access token is not valid, redirect the user to the Spotify login page
-            auth_url = auth_manager.get_authorize_url()
-            return redirect(auth_url)
-        
+            break
+
+    CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
+    request.session['choices'] = CHOICES
+
+    return redirect('success')
+    
 
 def logout_view(request):
     access_token = request.session.get('access_token')
