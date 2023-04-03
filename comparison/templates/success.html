@@ -75,6 +75,50 @@
     <br>
     <div class="enter-playlists">
         <div class="row">
+
+            <div class="row">
+                <div class="col-3 d-flex justify-content-center playlist-one" style="padding-left: 5%;">
+                    
+                    
+                    {% comment %} 
+                    {% if success %}
+                        <p>Your playlist ID is: {{ playlist_id }}</p>
+                    {% endif %} 
+                    {% endcomment %}
+
+
+                    <form id = "formone" method="POST" action="{% url 'form' %}">
+                        {% csrf_token %}
+                        {{ dropdown_form1 }}
+                        <button id="submit-btn-one" type="submit">Submit</button>
+
+                        {% comment %} 
+                        <button type="submit">Submit</button> 
+                        {% endcomment %}
+
+                    </form>
+                </div>
+                <div class="col-6 d-flex justify-content-center similar-songs-col">
+                    <p>This is where similar songs go</p>
+                </div>
+                <div class="col-3 d-flex justify-content-center playlist-two" style="padding-right: 5%;">
+                    <form id = "formsecond" method="POST" action="{% url 'formtwo' %}">
+                        {% csrf_token %}
+                        {{ dropdown_form2 }}
+                        <button id="submit-btn-two" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            {% comment %} 
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <button id="submit-btn" type="submit">Submit</button>
+                </div>
+            </div> 
+            {% endcomment %}
+
+            {% comment %}
             <div class="col-3 playlist-one" style="padding-left: 5%;">
                 <form id="formone" method="post">
                     {% csrf_token %}
@@ -95,6 +139,8 @@
                 </form>              
             </div>
         </div>
+        {% endcomment %}
+        
         <div class="row">
             <div class="col-4 d-flex justify-content-center playlist-one">  
 
