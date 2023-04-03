@@ -63,6 +63,13 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+              {% if similarity is not None and similarity != '' %}
+                <p class="text-center" style="font-size: 24px"><b>{{ similarity }}</b></p>
+              {% endif %}
+            </div>
+        </div>
     </div>
     <br>
     <br>
