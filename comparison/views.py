@@ -125,28 +125,20 @@ def logout_view(request):
 
 
     
-#def form(request):
-    #print("View executed!")
-    #if request.method == 'POST':
-        #playlist_id1 = request.POST.get('playlist_id1')
-
-
+def form(request):
+    print("View executed!")
+    if request.method == 'POST':
+        playlist_id1 = request.POST.get('playlist_id1')
         # playlist_id2 = request.POST.get('playlist_id2')
-
-
-        #with open('playlist_id1.txt', 'w') as f:
-            #f.write(playlist_id1)
-
-
+        with open('playlist_id1.txt', 'w') as f:
+            f.write(playlist_id1)
         # if (playlist_id2=="" or playlist_id1==""):
         #     return HttpResponse('fail')
         # print(playlist_id1, playlist_id2)
         # Do something with the user_text
         #return HttpResponse('Success')
-
-
-        #print(playlist_id1)
-    #return render(request, 'success.html')
+        print(playlist_id1)
+    return render(request, 'success.html')
 
 def formtwo(request):
     if request.method == 'POST':
