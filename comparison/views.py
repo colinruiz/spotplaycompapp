@@ -8,8 +8,6 @@ from django.shortcuts import redirect
 from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 from .forms import DropdownForm
 import os
-import spotipy
-from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 
 
@@ -94,6 +92,12 @@ def spotify_callback(request):
 @never_cache
 def success(request):
     # Set up the authentication credentials
+
+    print(request.session['access_token'])
+    print(request.session['refresh_token'])
+    print(request.session['choices'])
+
+
     access_token = request.session.get('access_token')
     sp = spotipy.Spotify(auth=access_token)
     
