@@ -1,6 +1,17 @@
 from django import forms
 from .models import MyData, Second
 
+
+
+# from django import forms
+# from .models import Dropdown
+# import spotipy
+# from spotipy.oauth2 import SpotifyClientCredentials
+# from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+# from spotipy.oauth2 import SpotifyOAuth
+# import os
+# #from .views import getUserPlaylist
+
 class DropdownForm(forms.Form):
 
     choice_field = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')

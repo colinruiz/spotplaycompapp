@@ -1,5 +1,5 @@
 from django.urls import path
-from comparison.views import *
+from .views import *
 
 urlpatterns = [
     path('', home, name='home'),
@@ -8,6 +8,5 @@ urlpatterns = [
     path('form/', form, name = 'form'),
     path('formtwo/', formtwo, name = 'formtwo'),
     path('logout/', logout_view, name='logout_view'),
-    path('compare/playlists/',  compare_playlists, name = 'compare_playlists'),
     path('success/', success, name='success')
 ]
