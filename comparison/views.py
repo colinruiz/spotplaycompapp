@@ -18,10 +18,6 @@ REDIRECT_URI = "http://127.0.0.1:8000/spotify/redirect"
 SCOPES= "user-read-playback-state app-remote-control streaming user-library-read playlist-read-private playlist-read-collaborative"
 
 
-auth_manager = SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET,
-                                redirect_uri=REDIRECT_URI,
-                                scope=SCOPES)
-
 def home(request):
     return render(request, 'home.html')
 
@@ -97,12 +93,6 @@ def spotify_callback(request):
 @never_cache
 def success(request):
     # Set up the authentication credentials
-
-    print(request.session['access_token'])
-    print(request.session['refresh_token'])
-    print(request.session['choices'])
-
-
     access_token = request.session.get('access_token')
     sp = spotipy.Spotify(auth=access_token)
     
