@@ -6,7 +6,11 @@ function showInput(selectElement) {
     if (selectElement.value === otherOption) {
       var inputElement = document.createElement("input");
       inputElement.type = "text";
-      inputElement.name = selectElement.name;
+      if (selectElement.parentNode.id == 'formone'){
+        inputElement.name = "playlist_id1";
+      } else {
+        inputElement.name = "playlist_id2";
+      }
       inputElement.placeholder = "Enter Playlist ID or Link...";
       inputElement.className = "form-control mt-2";
       selectElement.parentNode.insertBefore(inputElement, selectElement.nextSibling);
