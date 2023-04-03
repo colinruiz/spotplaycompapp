@@ -6,7 +6,7 @@ function showInput(selectElement) {
     if (selectElement.value === otherOption) {
       var inputElement = document.createElement("input");
       inputElement.type = "text";
-      if (selectElement.parentNode.id == 'formone'){
+      if (selectElement.form.id === 'formone') {
         inputElement.name = "playlist_id1";
       } else {
         inputElement.name = "playlist_id2";
