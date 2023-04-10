@@ -129,44 +129,52 @@ def logout_view(request):
 
 
 def compare_playlists(request):
-    with open('playlist_id1.txt', 'r') as f:
-        playlist1_id = f.read()
-    with open('playlist_id2.txt', 'r') as f:
-        playlist2_id = f.read()
-    
-    # scopes for auth_manager
-    scope = "user-read-playback-state app-remote-control streaming user-library-read"
-
-    #sp = spotipy.Spotify(auth_manager)
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=scope, redirect_uri=REDIRECT_URI))
-    #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
-
-    # counts the number of shared tracks
-    count=0
-    # gets playlist lengths
-    length1=sp.playlist(playlist1_id)['tracks']['total']
-    length2=sp.playlist(playlist2_id)['tracks']['total']
-    # iterates through playlists and adds to a list to be compared
-    list2 = []
-    for k in range((length2//100)+1):
-        playlist2=sp.playlist_tracks(playlist2_id, limit=100, offset=100*k)['items']
-        for a in playlist2:
-            list2.append(a['track']['id'])
-                
-    list1 = []
-    for i in range((length1//100)+1):
-        playlist1=sp.playlist_tracks(playlist1_id, limit=100, offset=100*i)['items']
-        for a in playlist1:
-            list1.append(a['track']['id'])
-
-    # finds the number of common tracks
-    for i in list1:
-        #print(i)
-        if i in list2:
-            count+=1
+    try: 
+        with open('playlist_id1.txt', 'r') as f:
+            playlist1_id = f.read()
+        with open('playlist_id2.txt', 'r') as f:
+            playlist2_id = f.read()
         
-    similarity = "The two playlists have " +str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
-    return render(request, 'success.html', {'similarity': similarity})
+        # scopes for auth_manager
+        scope = "user-read-playback-state app-remote-control streaming user-library-read"
+
+        #sp = spotipy.Spotify(auth_manager)
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=scope, redirect_uri=REDIRECT_URI))
+        #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
+
+        # counts the number of shared tracks
+        count=0
+        # gets playlist lengths
+        length1=sp.playlist(playlist1_id)['tracks']['total']
+        length2=sp.playlist(playlist2_id)['tracks']['total']
+        # iterates through playlists and adds to a list to be compared
+        list2 = []
+        for k in range((length2//100)+1):
+            playlist2=sp.playlist_tracks(playlist2_id, limit=100, offset=100*k)['items']
+            for a in playlist2:
+                list2.append(a['track'])
+                    
+        list1 = []
+        for i in range((length1//100)+1):
+            playlist1=sp.playlist_tracks(playlist1_id, limit=100, offset=100*i)['items']
+            for a in playlist1:
+                list1.append(a['track'])
+
+        # finds the number of common tracks
+        commonSongs = []
+        for i in range(len(list1)):
+            #print(i)
+            for j in range(len(list2)):
+                if list1[i]['id']==list2[j]['id']:
+                    count+=1
+                    #print(list1[i]['name'], list1[i]['artists'][0]['name'])
+                    commonSongs.append(list1[i]['name'] + list1[i]['artists'][0]['name'])
+                    
+            
+        similarity = "The two playlists have " +str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
+        return render(request, 'success.html', {'similarity': similarity, 'commonSongs': commonSongs})
+    except:
+        return render(request, 'success.html', {'similarity': "Please enter valid playlist IDs and try again", 'commonSongs': []})
 
 # def calculate_playlists(request):
 #     response = compare_playlists(request)
