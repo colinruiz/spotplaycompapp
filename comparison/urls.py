@@ -9,5 +9,5 @@ urlpatterns = [
     path('formtwo/', formtwo, name = 'formtwo'),
     path('logout/', logout_view, name='logout_view'),
     path('success/', success, name='success'),
-    path('compare_playlists/', compare_playlists, name='compare_playlists')
+    path('compare-playlists/', compare_playlists, name='compare_playlists')
 ]

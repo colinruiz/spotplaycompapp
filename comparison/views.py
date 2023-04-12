@@ -9,6 +9,7 @@ from spotipy.oauth2 import SpotifyOAuth, CacheHandler
 from .forms import DropdownForm
 import os
 from django.views.decorators.cache import never_cache
+from django.http import JsonResponse
 
 
 CLIENT_ID = "0eb27e7c8598493fba46f54e10550e4f"
@@ -106,7 +107,6 @@ def success(request):
     dropdown_form1 = DropdownForm(choices=request.session.get('choices', []))
     dropdown_form2 = DropdownForm(choices=request.session.get('choices', []))
 
-    
     # Render the success template with the playlist names
     return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
         
@@ -190,14 +190,15 @@ def compare_playlists(request):
         num_total = len(tracks1.union(tracks2))
         percentage_similar = round(num_similar / num_total * 100, 2)
 
-
-        return render(request, 'success.html', {'percentage_similar': percentage_similar})
-        
+        response_data = {
+            'message': 'Playlists are ' + percentage_similar + ' similar',
+            'playlist1': playlist1,
+            'playlist2': playlist2,
+        }
+        return JsonResponse(response_data)
     else:
-        return render(request, 'success.html')
+        return JsonResponse({'error': 'Invalid request method.'})
         
-    similarity = "The two playlists have " +str(round((count/(length1+length2-count))*100, 2))+"%"+' in common'
-    return render(request, 'success.html', {'similarity': similarity})
 
     
 
