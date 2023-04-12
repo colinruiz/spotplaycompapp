@@ -93,8 +93,6 @@ def spotify_callback(request):
 @never_cache
 def success(request):
     # Set up the authentication credentials
-
-
     access_token = request.session.get('access_token')
     sp = spotipy.Spotify(auth=access_token)
     
@@ -107,8 +105,39 @@ def success(request):
     dropdown_form1 = DropdownForm(choices=request.session.get('choices', []))
     dropdown_form2 = DropdownForm(choices=request.session.get('choices', []))
 
-    # Render the success template with the playlist names
-    return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
+    if request.method == 'POST':
+        print('View executed')
+        form1_data = request.POST.get('data1')
+        form2_data = request.POST.get('data2')
+
+        print(form1_data)
+        print(form2_data)
+
+
+        #sp = spotipy.Spotify(auth_manager)
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=SCOPES, redirect_uri=REDIRECT_URI))
+        #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
+
+        # counts the number of shared tracks
+        count=0
+
+        # Get the tracks from both playlists
+        playlist1 = sp.playlist(form1_data)
+        playlist2 = sp.playlist(form2_data)
+        
+        tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
+        tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
+        
+        # Calculate the percentage of similar songs
+        num_similar = len(tracks1.intersection(tracks2))
+        num_total = len(tracks1.union(tracks2))
+        percentage_similarity = round(num_similar / num_total * 100, 2)
+
+        return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2, 'percent_similarity': percentage_similarity})
+
+    else:
+        # Render the success template with the playlist names
+        return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
         
 
 def logout_view(request):
@@ -133,42 +162,16 @@ def logout_view(request):
 #BQBUC0u69Ae4W02sjOWSgGnzJC09hUDc32Z-7yQKauHfeA7YgmT3sg6uySe2P8jcsW6dMewgMvggcsFY4QjXgyv1oUrM9vmG7QGpP263tHjH0-i8P2RvcdeOO_MfmHX9BRVzKoHFR3YC5NwwB-hYcLgThGfbi2WcQwBr38dWufTRXSscsokeu7oS38n5UmTPjt0jP6RQlNkm3rsz9kunzuY4FlkfHIffFgg-L9N8plcxIg
 #AQCvTlniNN9o-OTmwmS5BnD2J3edhgAdndaJjsDvat9AV6IdVrogKEnuXrneNLZgCuo5-Zs9LHj-WQO2IS56gq6bd665pzLqqArMN_ce_scyoPSMdEya_OTYmmq3A_GGDhA
 
-
-def form(request):
-    print("View executed!")
-    if request.method == 'POST':
-        playlist_id1 = request.POST.get('playlist_id1')
-        # playlist_id2 = request.POST.get('playlist_id2')
-        with open('playlist_id1.txt', 'w') as f:
-            f.write(playlist_id1)
-        # if (playlist_id2=="" or playlist_id1==""):
-        #     return HttpResponse('fail')
-        # print(playlist_id1, playlist_id2)
-        # Do something with the user_text
-        #return HttpResponse('Success')
-        print(playlist_id1)
-    return redirect('compare_playlists')
-
-def formtwo(request):
-    if request.method == 'POST':
-        playlist_id2 = request.POST.get('playlist_id2')
-        # playlist_id2 = request.POST.get('playlist_id2')
-        with open('playlist_id2.txt', 'w') as f:
-            f.write(playlist_id2)
-        # if (playlist_id2=="" or playlist_id1==""):
-        #     return HttpResponse('fail')
-        # print(playlist_id1, playlist_id2)
-        # Do something with the user_text
-        #return HttpResponse('Success')
-        
-        # Do something with the user_text
-        print(playlist_id2)
-    return redirect('compare_playlists')
-
 def compare_playlists(request):
+    print("View Executed")
     if request.method == 'POST':
-        playlist_id_1 = request.POST.get('playlist_id1')
-        playlist_id_2 = request.POST.get('playlist_id2')
+        
+        form1_data = request.POST.get('form1_data')
+        form2_data = request.POST.get('form2_data')
+
+        print(request.method)  # should be POST
+        print(request.POST)  # should contain the form data
+        print(request.POST.get('data1'))
 
 
         #sp = spotipy.Spotify(auth_manager)
@@ -179,8 +182,8 @@ def compare_playlists(request):
         count=0
 
         # Get the tracks from both playlists
-        playlist1 = sp.playlist(playlist_id_1)
-        playlist2 = sp.playlist(playlist_id_2)
+        playlist1 = sp.playlist(form1_data)
+        playlist2 = sp.playlist(form2_data)
         
         tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
         tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
@@ -192,8 +195,6 @@ def compare_playlists(request):
 
         response_data = {
             'message': 'Playlists are ' + percentage_similar + ' similar',
-            'playlist1': playlist1,
-            'playlist2': playlist2,
         }
         return JsonResponse(response_data)
     else:

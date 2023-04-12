@@ -57,14 +57,16 @@
         </div>
         <div class="row">
             <div class="col d-flex justify-content-center calculate-button">
-                <form method="post">
+                <form method="POST" action="success/">
                     {% csrf_token %}
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                     <button class="center btn btn-success" id="submit-button" type="submit btn">Calculate Similarity</button>
                 </form>
             </div>
         </div>
         <div class="row">
             <div class="col d-flex justify-content-center" id="compare_message">
+                <p>The two playlists are <b>{{ percent_similarity}}</b> percent similar.</p>
             </div>
         </div>
     </div>
@@ -84,7 +86,7 @@
                     {% endcomment %}
 
 
-                    <form id = "formone" method="POST" action="compare_playlists">
+                    <form id = "formone" method="POST">
                         {% csrf_token %}
                         {{ dropdown_form1 }}
                     </form>
@@ -93,7 +95,7 @@
                     <p>This is where similar songs go</p>
                 </div>
                 <div class="col-3 d-flex justify-content-center playlist-two" style="padding-right: 5%;">
-                    <form id = "formtwo" method="POST" action="compare_playlists">
+                    <form id = "formtwo" method="POST">
                         {% csrf_token %}
                         {{ dropdown_form2 }}
                     </form>
@@ -115,6 +117,42 @@
     <br>
     <br>
     <br>
+    <script>
+
+    document.getElementById("submit-button").addEventListener("click", function(event) {
+        event.preventDefault(); // prevent default form submission behavior
+        
+        var formData1 = new FormData(document.querySelector('#formone'));
+        var formData2 = new FormData(document.querySelector('#formtwo'));
+
+        const formData = {
+            data1: formData1.get('data1'),
+            data2: formData2.get('data2')
+        };
+
+        console.log(formData)
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      
+        fetch('/success/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          // update the "compare_message" element with the response data
+          const Element = document.getElementById("compare_message");
+          Element.innerHTML = data.message;
+          location.reload();
+        })
+        .catch(error => console.error('Error: ', error));
+      });
+        
+    </script>
 </html>
 
 
