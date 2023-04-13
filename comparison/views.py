@@ -169,6 +169,7 @@ def compare_playlists(request):
         form1_data = request.POST.get('form1_data')
         form2_data = request.POST.get('form2_data')
 
+        print('Made it!')
         print(request.method)  # should be POST
         print(request.POST)  # should contain the form data
         print(request.POST.get('data1'))
