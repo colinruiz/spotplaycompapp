@@ -107,11 +107,12 @@ def success(request):
 
     if request.method == 'POST':
         print('View executed')
-        form1_data = request.POST.get('data1')
-        form2_data = request.POST.get('data2')
 
-        print(form1_data)
-        print(form2_data)
+        value_from_formone = request.POST.get('data1')
+        value_from_formtwo = request.POST.get('data2')
+
+        print(value_from_formone)
+        print(value_from_formtwo)
 
 
         #sp = spotipy.Spotify(auth_manager)
@@ -122,8 +123,11 @@ def success(request):
         count=0
 
         # Get the tracks from both playlists
-        playlist1 = sp.playlist(form1_data)
-        playlist2 = sp.playlist(form2_data)
+        playlist1 = sp.playlist(value_from_formone)
+        playlist2 = sp.playlist(value_from_formtwo)
+
+        playlist1_img = playlist1['images'][0]['url']
+        playlist2_img = playlist2['images'][0]['url']
         
         tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
         tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
@@ -133,7 +137,28 @@ def success(request):
         num_total = len(tracks1.union(tracks2))
         percentage_similarity = round(num_similar / num_total * 100, 2)
 
-        return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2, 'percent_similarity': percentage_similarity})
+        shared_tracks = []
+
+        for track in playlist1['tracks']['items']:
+            if track['track'] is not None and track['track']['id'] in tracks2:
+                shared_tracks.append(track['track']['name'])
+        
+        for track in playlist2['tracks']['items']:
+            if track['track'] is not None and track['track']['id'] in tracks1:
+                shared_tracks.append(track['track']['name'])
+
+        print(percentage_similarity)
+
+        response = {
+            'percentage_similarity': percentage_similarity,
+            'playlist1': playlist1,
+            'playlist2': playlist2,
+            'shared_tracks': shared_tracks,
+            'playlist1_img': playlist1_img,
+            'playlist2_img': playlist2_img,
+        }
+
+        return JsonResponse(response)
 
     else:
         # Render the success template with the playlist names
@@ -168,11 +193,6 @@ def compare_playlists(request):
         
         form1_data = request.POST.get('form1_data')
         form2_data = request.POST.get('form2_data')
-
-        print('Made it!')
-        print(request.method)  # should be POST
-        print(request.POST)  # should contain the form data
-        print(request.POST.get('data1'))
 
 
         #sp = spotipy.Spotify(auth_manager)

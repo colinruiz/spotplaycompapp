@@ -9,9 +9,11 @@ function showInput(selectElement) {
     if (selectElement.form.id === 'formone') {
       inputElement.id = "playlist_id1";
       inputElement.name = "data1"
+      selectElement.id = ""
     } else {
       inputElement.id = "playlist_id2";
       inputElement.name = "data2"
+      selectElement.id = ""
     }
     inputElement.placeholder = "Enter Playlist ID or Link...";
     inputElement.className = "form-control mt-2";
