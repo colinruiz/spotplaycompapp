@@ -105,15 +105,16 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
-            <div class="col-4 d-flex justify-content-center playlist-one">  
-                <img id="img1" src="">
+            <div class="col-4 d-flex justify-content-center playlist-one" id="img1">  
+                
             </div>
             <div class="col-4 d-flex justify-content-center playlist-one">
                 <p>Show same songs here</p>                       
             </div>
-            <div class="col-4 d-flex justify-content-center playlist-one">
-                <img id="img2" src="">
+            <div class="col-4 d-flex justify-content-center playlist-one" id="img2">
+                
             </div>
         </div>
     </div>
@@ -138,8 +139,12 @@
             },
             success: function(response) {
                 $('#compare_message').html('The two playlists are ' + '   ' + '<b>' + response.percentage_similarity + '</b>' + '   ' + ' percent similar.');
-                $('#img1').attr("src", response.playlist1_img);
-                $('#img2').attr("src", response.playlist2_img);
+                if($('#image_1').length){
+                    $('#img1').find('#image_1').remove();
+                    $('#img2').find('#image_2').remove();
+                }
+                $('#img1').append('<img src="' + response.playlist1_img + '" style="height: 90%; width: 90%;" class="justify-content-center" id="image_1">');
+                $('#img2').append('<img src="' + response.playlist2_img + '" style="height: 90%; width: 90%;" class="justify-content-center" id="image_2">');
             }
         });
     });
