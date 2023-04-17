@@ -147,7 +147,10 @@
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function(response) {
-                $('#compare_message').html('The two playlists are ' + '   ' + '<b>' + response.percentage_similarity + '%' + '</b>'+ '   ' + ' similar.');
+                if(response.validPlaylist){
+                    $('#compare_message').html('The two playlists are ' + '   ' + '<b>' + response.percentage_similarity + '%' + '</b>'+ '   ' + ' similar.');
+                }
+                else {$('#compare_message').html('<b>' + 'Please enter a valid playlist ID' + '</b>');}
                 if($('#image_1').length){
                     $('#img1').find('#image_1').remove();
                     $('#img2').find('#image_2').remove();

@@ -115,7 +115,7 @@ def success(request):
         print(value_from_formone)
         print(value_from_formtwo)
 
-
+        
         #sp = spotipy.Spotify(auth_manager)
         sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=SCOPES, redirect_uri=REDIRECT_URI))
         #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
@@ -124,39 +124,62 @@ def success(request):
         count=0
 
         # Get the tracks from both playlists
-        playlist1 = sp.playlist(value_from_formone)
-        playlist2 = sp.playlist(value_from_formtwo)
+        valid1=None
+        valid2=None
+        playlist1_img=None
+        playlist2_img=None
+        try:
+            playlist1 = sp.playlist(value_from_formone)
+            valid1=True
+            playlist1_img = playlist1['images'][0]['url']
+        except:
+            valid1=False
 
-        playlist1_img = playlist1['images'][0]['url']
-        playlist2_img = playlist2['images'][0]['url']
-        
-        tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
-        tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
-        
-        # Calculate the percentage of similar songs
-        num_similar = len(tracks1.intersection(tracks2))
-        num_total = len(tracks1.union(tracks2))
-        percentage_similarity = round(num_similar / num_total * 100, 2)
+        try:
+            playlist2 = sp.playlist(value_from_formtwo)
+            valid2=True
+            playlist2_img = playlist2['images'][0]['url']
+        except:
+            valid2=False
 
-        shared_tracks = []
+        #playlist1_img = playlist1['images'][0]['url']
+        #playlist2_img = playlist2['images'][0]['url']
+        if(valid1 and valid2):
+            tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
+            tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
+            
+            # Calculate the percentage of similar songs
+            num_similar = len(tracks1.intersection(tracks2))
+            num_total = len(tracks1.union(tracks2))
+            percentage_similarity = round(num_similar / num_total * 100, 2)
 
-        for track in playlist1['tracks']['items']:
-            if track['track'] is not None and track['track']['id'] in tracks2:
-                shared_tracks.append(track['track']['name'])
+            shared_tracks = []
 
-        print(percentage_similarity)
-
-        response = {
+            for track in playlist1['tracks']['items']:
+                if track['track'] is not None and track['track']['id'] in tracks2:
+                    shared_tracks.append(track['track']['name'])
+            response = {
             'percentage_similarity': percentage_similarity,
             'playlist1': playlist1,
             'playlist2': playlist2,
             'shared_tracks': shared_tracks,
             'playlist1_img': playlist1_img,
             'playlist2_img': playlist2_img,
+            'validPlaylist': (valid1 and valid2)
         }
+        else: 
+            response={
+            'playlist1_img': playlist1_img,
+            'playlist2_img': playlist2_img,
+            'validPlaylist': (valid1 and valid2)
+            }
+        #print(percentage_similarity)
+        
+        print(valid1, valid2, valid1 and valid2)
+        
 
         return JsonResponse(response)
-
+        
     else:
         # Render the success template with the playlist names
         return render(request, 'success.html', context = {'dropdown_form1': dropdown_form1, 'dropdown_form2': dropdown_form2})
