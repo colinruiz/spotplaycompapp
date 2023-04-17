@@ -101,7 +101,7 @@ def success(request):
         'Authorization': f'Bearer {access_token}'
     }
     playlists_response = requests.get('https://api.spotify.com/v1/me/playlists', headers=headers)
-    playlists = playlists_response.json()['items']
+    #playlists = playlists_response.json()['items']
 
     dropdown_form1 = DropdownForm(choices=request.session.get('choices', []))
     dropdown_form2 = DropdownForm(choices=request.session.get('choices', []))
@@ -120,8 +120,7 @@ def success(request):
         sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, scope=SCOPES, redirect_uri=REDIRECT_URI))
         #sp = spotipy.Spotify(auth_manager=SpotifyOAuth('f8a3f82ba99d46a694d89bc1cdc1cb09', '0dcbdb4f9fd0496683a16c01c93a9377', scope=scope, redirect_uri="http://127.0.0.1:8000/spotify/redirect"))
 
-        # counts the number of shared tracks
-        count=0
+        
 
         # Get the tracks from both playlists
         valid1=None
@@ -145,19 +144,46 @@ def success(request):
         #playlist1_img = playlist1['images'][0]['url']
         #playlist2_img = playlist2['images'][0]['url']
         if(valid1 and valid2):
-            tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
-            tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
+            length1=sp.playlist(value_from_formone)['tracks']['total']
+            length2=sp.playlist(value_from_formtwo)['tracks']['total']
+            #tracks1 = set([track['track']['id'] for track in playlist1['tracks']['items'] if track['track'] is not None])
+            #tracks2 = set([track['track']['id'] for track in playlist2['tracks']['items'] if track['track'] is not None])
             
+            tracks1 = []
+            for k in range((length2//100)+1):
+                playlist2=sp.playlist_tracks(value_from_formtwo, limit=100, offset=100*(k))['items']
+                for a in playlist2:
+                    tracks1.append(a['track'])
+                        
+            tracks2 = []
+            for i in range((length1//100)+1):
+                playlist1=sp.playlist_tracks(value_from_formone, limit=100, offset=100*i)['items']
+                for a in playlist1:
+                    tracks2.append(a['track'])
+            
+            # counts the number of shared tracks
+            count=0
+                    
+            shared_tracks = []        
+            for i in tracks1:
+                #print(i)
+                for j in tracks2:
+                    if i['id'] == j['id']:
+                        count+=1
+                        str1=(i['name']+" - "+ i['artists'][0]['name'])
+                        shared_tracks.append(str1)
+            #tracks1=set(tracks1)
+            #tracks2=set(tracks2)
             # Calculate the percentage of similar songs
-            num_similar = len(tracks1.intersection(tracks2))
-            num_total = len(tracks1.union(tracks2))
-            percentage_similarity = round(num_similar / num_total * 100, 2)
+            #num_similar = len(tracks1.intersection(tracks2))
+            #num_total = len(tracks1.union(tracks2))
+            percentage_similarity = round((count / (length1+length2-count)) * 100, 2)
 
-            shared_tracks = []
-
-            for track in playlist1['tracks']['items']:
-                if track['track'] is not None and track['track']['id'] in tracks2:
-                    shared_tracks.append(track['track']['name'])
+            
+            #print(playlist1.keys())
+            #for track in playlist1:
+            #    if track['id'] is not None and track['id'] in tracks2:
+            #        shared_tracks.append(track['name'])
             response = {
             'percentage_similarity': percentage_similarity,
             'playlist1': playlist1,
@@ -175,7 +201,7 @@ def success(request):
             }
         #print(percentage_similarity)
         
-        print(valid1, valid2, valid1 and valid2)
+        #print(valid1, valid2, valid1 and valid2)
         
 
         return JsonResponse(response)
