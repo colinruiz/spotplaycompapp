@@ -83,7 +83,8 @@ def spotify_callback(request):
         else:
             break
 
-    CHOICES = [(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')]
+    CHOICES = [('', 'Select Playlist...')]
+    CHOICES.extend([(playlist['id'], playlist['name']) for playlist in playlists] + [('other', 'Other')])
     request.session['choices'] = CHOICES
 
     return redirect('success')

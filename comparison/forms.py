@@ -100,7 +100,7 @@ import os
 
 class DropdownForm(forms.Form):
 
-    choice_field = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'class': 'form-select', 'onchange': 'showInput(this)'}), label='Select Playlist:')
+    choice_field = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'class': 'form-select', 'placeholder': 'Select Playlist...', 'onchange': 'showInput(this)'}), label='Select Playlist:')
     text_field = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none;'}), label='')
 
     def __init__(self, choices, *args, **kwargs):
