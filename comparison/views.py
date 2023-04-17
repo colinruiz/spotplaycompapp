@@ -142,10 +142,6 @@ def success(request):
         for track in playlist1['tracks']['items']:
             if track['track'] is not None and track['track']['id'] in tracks2:
                 shared_tracks.append(track['track']['name'])
-        
-        for track in playlist2['tracks']['items']:
-            if track['track'] is not None and track['track']['id'] in tracks1:
-                shared_tracks.append(track['track']['name'])
 
         print(percentage_similarity)
 
