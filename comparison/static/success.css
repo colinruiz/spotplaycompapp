@@ -13,14 +13,20 @@ h1 {
     padding-right: 10%;
 }
 
-.scroll_box_div {
-    max-height: 200px;
+#scroll_box_div {
+    height: 500px; /* set a default height */
+    width: 270px; /* set a default width */
+    max-height: 500px;
+    max-width: 270px;
     overflow-y: scroll;
     border: 1px solid #aaa;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* center the list box vertically and horizontally */
 }
 
-.scroll_box {
+#scroll_box {
     list-style-type: none;
     margin: 0;
     padding: 0;
