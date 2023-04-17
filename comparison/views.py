@@ -53,7 +53,7 @@ def spotify_callback(request):
     # Exchange the authentication code for an access token and refresh token
     code = request.GET.get('code')
     #sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id, client_secret, redirect_uri, scope=SCOPES)
-    token_info = auth_manager.get_access_token(code)
+    token_info = auth_manager.get_access_token(code, check_cache=False)
 
     # Check if the authorization code is in the request
     if not token_info['access_token']:
