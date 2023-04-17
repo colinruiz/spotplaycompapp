@@ -13,3 +13,15 @@ h1 {
     padding-right: 10%;
 }
 
+.scroll_box_div {
+    max-height: 200px;
+    overflow-y: scroll;
+    border: 1px solid #aaa;
+    padding: 10px;
+}
+
+.scroll_box {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}

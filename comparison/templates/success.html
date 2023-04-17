@@ -94,8 +94,8 @@
                         {{ dropdown_form1 }}
                     </form>
                 </div>
-                <div class="col-6 d-flex justify-content-center similar-songs-col">
-                    <p>This is where similar songs go</p>
+                <div class="col-6 d-flex justify-content-center similar-songs-col" id="scroll_box_div">
+                    <ul id="scroll_box"></ul>
                 </div>
                 <div class="col-3 d-flex justify-content-center playlist-two" style="padding-right: 5%;">
                     <form id = "formtwo" method="POST">
@@ -145,6 +145,12 @@
                 }
                 $('#img1').append('<img src="' + response.playlist1_img + '" style="height: 90%; width: 90%;" class="justify-content-center" id="image_1">');
                 $('#img2').append('<img src="' + response.playlist2_img + '" style="height: 90%; width: 90%;" class="justify-content-center" id="image_2">');
+                var sharedTracks = response.shared_tracks;
+                var list = $('#scroll_box'); // select the existing <ul> element
+                list.empty(); // remove any existing items from the list
+                $.each(sharedTracks, function(index, value) {
+                    list.append($('<li>').text(value));
+                });
             }
         });
     });
