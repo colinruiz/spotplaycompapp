@@ -157,9 +157,13 @@
                 var sharedTracks = response.shared_tracks;
                 var list = $('#scroll_box'); // select the existing <ul> element
                 list.empty(); // remove any existing items from the list
-                $.each(sharedTracks, function(index, value) {
-                    list.append($('<li>').text(value));
-                });
+                if(sharedTracks.length == 0){
+                    list.append($('<li>').text('There are no similar songs.'));
+                }else{
+                    $.each(sharedTracks, function(index, value) {
+                        list.append($('<li>').text(value));
+                    });
+                }
             }
         });
     });
