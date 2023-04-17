@@ -13,21 +13,34 @@ h1 {
     padding-right: 10%;
 }
 
-#scroll_box_div {
-    height: 500px; /* set a default height */
-    width: 270px; /* set a default width */
-    max-height: 500px;
-    max-width: 270px;
-    overflow-y: scroll;
+#similar-songs {
+    height: 300px;
+  }
+  
+  #scroll_box_div {
+    height: 100%;
+    max-height: calc(100% - 15px);
+    overflow-y: auto;
     border: 1px solid #aaa;
     padding: 10px;
     display: flex;
     justify-content: center;
-    align-items: center; /* center the list box vertically and horizontally */
-}
-
-#scroll_box {
+    align-items: center;
+    min-width: 300px; /* add this property to set the minimum width to 300px */
+  }
+  
+  #scroll_box {
     list-style-type: none;
     margin: 0;
     padding: 0;
-}
+  }
+  
+  #display_row {
+    height: 300px;
+  }
+  
+  .similar-songs-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
