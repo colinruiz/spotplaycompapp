@@ -169,6 +169,7 @@ def success(request):
                         count+=1
                         str1=(i['name']+" - "+ i['artists'][0]['name'])
                         shared_tracks.append(str1)
+                        tracks2.remove(j)
             #tracks1=set(tracks1)
             #tracks2=set(tracks2)
             # Calculate the percentage of similar songs
