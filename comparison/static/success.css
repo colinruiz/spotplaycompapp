@@ -13,11 +13,17 @@ h1 {
     padding-right: 10%;
 }
 
+.scrolling-list li:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
 #similar-songs {
     height: 300px;
   }
   
-  #scroll_box_div {
+#scroll_box_div {
     height: 100%;
     max-height: calc(100% - 15px);
     overflow-y: auto;
@@ -27,20 +33,20 @@ h1 {
     justify-content: center;
     align-items: center;
     min-width: 300px; /* add this property to set the minimum width to 300px */
-  }
+}
   
-  #scroll_box {
+#scroll_box {
     list-style-type: none;
     margin: 0;
     padding: 0;
-  }
+}
   
-  #display_row {
+#display_row {
     height: 300px;
-  }
+}
   
-  .similar-songs-col {
+.similar-songs-col {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-  }
+}
