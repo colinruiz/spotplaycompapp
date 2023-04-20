@@ -176,6 +176,7 @@ def success(request):
             #num_similar = len(tracks1.intersection(tracks2))
             #num_total = len(tracks1.union(tracks2))
             percentage_similarity = round((count / (length1+length2-count)) * 100, 2)
+            
 
             
             #print(playlist1.keys())
@@ -187,6 +188,7 @@ def success(request):
             'playlist1': playlist1,
             'playlist2': playlist2,
             'shared_tracks': shared_tracks,
+            'count' : count,
             'playlist1_img': playlist1_img,
             'playlist2_img': playlist2_img,
             'validPlaylist': (valid1 and valid2)

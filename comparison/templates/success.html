@@ -74,9 +74,13 @@
                 <p id="compare_message"></p>
             </div>
         </div>
+        <div class="row">
+            <br>
+            <div class="col d-flex justify-content-center">
+                <p id="compare_message2"></p>
+            </div>
+        </div>
     </div>
-    <br>
-    <br>
     <div class="enter-playlists">
         <div class="row">
 
@@ -149,6 +153,7 @@
             success: function(response) {
                 if(response.validPlaylist){
                     $('#compare_message').html('The two playlists are ' + '   ' + '<b>' + response.percentage_similarity + '%' + '</b>'+ '   ' + ' similar.');
+                    $('#compare_message2').html('They have ' + '   ' + '<b>' + response.count + '</b>'+ '   ' + ' same songs.');
                 }
                 else {$('#compare_message').html('<b>' + 'Please enter a valid playlist ID' + '</b>');}
                 if($('#image_1').length){
