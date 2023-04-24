@@ -197,7 +197,8 @@ def success(request):
             response={
             'playlist1_img': playlist1_img,
             'playlist2_img': playlist2_img,
-            'validPlaylist': (valid1 and valid2)
+            'validPlaylist': (valid1 and valid2),
+            'count':0
             }
         #print(percentage_similarity)
         

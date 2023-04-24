@@ -153,9 +153,11 @@
             success: function(response) {
                 if(response.validPlaylist){
                     $('#compare_message').html('The two playlists are ' + '   ' + '<b>' + response.percentage_similarity + '%' + '</b>'+ '   ' + ' similar.');
-                    $('#compare_message2').html('They have ' + '   ' + '<b>' + response.count + '</b>'+ '   ' + ' same songs.');
+                    $('#compare_message2').html('They have ' + '   ' + '<b>' + response.count + '</b>'+ '   ' + ' song(s) in common.');
                 }
-                else {$('#compare_message').html('<b>' + 'Please enter a valid playlist ID' + '</b>');}
+                else {$('#compare_message').html('<b>' + 'Please enter a valid playlist ID' + '</b>');
+                    $('#compare_message2').html('');
+                }
                 if($('#image_1').length){
                     $('#img1').find('#image_1').remove();
                     $('#img2').find('#image_2').remove();
