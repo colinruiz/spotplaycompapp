@@ -137,6 +137,8 @@
     <script>
     
     $('#submit-button').click(function(event) {
+        $('#compare_message').html('')
+        $('#compare_message2').html('Please wait while we calculate the similarity of the two playlists...');
         event.preventDefault();
         
         var data1 = $('#playlist_id1').val();
